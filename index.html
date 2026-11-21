@@ -1,0 +1,762 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hole People Monetization Case</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&family=Lilita+One&display=swap">
+<style>
+/* Layout: sticky section rail on the left, one reading column; each case question is a section you can step through with arrow keys. */
+:root{
+  --bg:#f4f7fb; --surface:#ffffff; --surface-2:#eaf0f8; --ink:#10172a; --ink-2:#4b5568; --muted:#6b7488;
+  --line:#dbe2ec; --accent:#1f5fd1; --accent-ink:#ffffff; --coin:#e9a100; --coin-soft:#fff4d6;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --good:#0a7d0a; --bad:#d03b3b; --grid:#e3e8ef; --axis:#b9c2cf;
+  --phone:#0f1a33; --sky1:#36b6ff; --sky2:#1d8ff0;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0c1120; --surface:#141b2d; --surface-2:#1b2438; --ink:#edf1f8; --ink-2:#b9c2d3; --muted:#8d97ab;
+  --line:#263049; --accent:#6aa0ff; --accent-ink:#0c1120; --coin:#f5b72a; --coin-soft:#3a2f12;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70; --good:#2fbf4a; --bad:#e66767; --grid:#222b40; --axis:#3a455e;
+  --phone:#05080f; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0c1120; --surface:#141b2d; --surface-2:#1b2438; --ink:#edf1f8; --ink-2:#b9c2d3; --muted:#8d97ab;
+  --line:#263049; --accent:#6aa0ff; --accent-ink:#0c1120; --coin:#f5b72a; --coin-soft:#3a2f12;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70; --good:#2fbf4a; --bad:#e66767; --grid:#222b40; --axis:#3a455e;
+  --phone:#05080f; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:15px/1.6 var(--f-body);margin:0}
+.wrap{display:grid;grid-template-columns:210px minmax(0,1fr);gap:40px;max-width:1180px;margin:0 auto;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));padding-block:32px 80px}
+nav.rail{position:sticky;top:calc(24px + env(safe-area-inset-top, 0px));align-self:start;display:flex;flex-direction:column;gap:2px}
+nav.rail .brand{font:800 15px/1.2 var(--f-display);margin-bottom:14px;letter-spacing:-.01em}
+nav.rail a{color:var(--ink-2);text-decoration:none;padding:7px 10px;border-radius:8px;font-size:14px;display:flex;gap:10px;align-items:baseline}
+nav.rail a span{font:600 11px var(--f-mono);color:var(--muted);min-width:22px}
+nav.rail a:hover{background:var(--surface-2)}
+nav.rail a.on{background:var(--surface);color:var(--ink);box-shadow:0 0 0 1px var(--line)}
+nav.rail .hint{margin-top:16px;font-size:12px;color:var(--muted)}
+kbd{font:600 11px var(--f-mono);border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:0 5px;background:var(--surface)}
+main{min-width:0;display:flex;flex-direction:column;gap:72px}
+section{scroll-margin-top:24px;display:flex;flex-direction:column;gap:22px;min-width:0}
+.eyebrow{font:600 12px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;letter-spacing:-.02em;margin:0}
+h1{font-size:clamp(36px,6vw,60px);line-height:1.02;font-weight:800}
+h2{font-size:clamp(26px,3.4vw,36px);line-height:1.1;font-weight:800}
+h3{font-size:19px;line-height:1.25;font-weight:600}
+p{margin:0;max-width:68ch;color:var(--ink-2)}
+p strong,li strong{color:var(--ink)}
+.lede{font-size:18px;color:var(--ink-2);max-width:60ch}
+.qtext{border-left:3px solid var(--coin);padding:6px 0 6px 16px;color:var(--ink-2);font-size:14px;max-width:72ch}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;min-width:0}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:2px}
+.stat b{font:800 28px/1.1 var(--f-display);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.stat small{color:var(--muted);font-size:12.5px;line-height:1.4}
+.insight{background:var(--coin-soft);border-radius:14px;padding:18px 20px;display:flex;flex-direction:column;gap:6px}
+.insight .eyebrow{color:var(--ink)}
+.insight p{color:var(--ink);font-size:16px}
+ul.clean{margin:0;padding-left:18px;color:var(--ink-2);display:flex;flex-direction:column;gap:6px;max-width:72ch}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:600 11.5px var(--f-mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted);background:var(--surface-2)}
+tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;font-family:var(--f-mono);font-size:13px}
+.pill{display:inline-block;font:600 11px var(--f-mono);padding:2px 8px;border-radius:99px;background:var(--surface-2);color:var(--ink-2);white-space:nowrap}
+.pill.good{background:color-mix(in srgb,var(--good) 16%,transparent);color:var(--good)}
+.pill.bad{background:color-mix(in srgb,var(--bad) 16%,transparent);color:var(--bad)}
+.pill.coin{background:var(--coin-soft);color:var(--ink)}
+.subhead{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.subhead .tag{font:600 13px var(--f-mono);color:var(--accent)}
+.note{font-size:12.5px;color:var(--muted)}
+/* charts */
+.chart{width:100%;height:auto;display:block;overflow:visible}
+.chart text{font:11px var(--f-mono);fill:var(--muted)}
+.chart .lbl{fill:var(--ink);font-weight:600}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--ink-2)}
+.legend i{display:inline-block;width:12px;height:3px;border-radius:2px;margin-right:6px;vertical-align:middle}
+#tip{position:fixed;pointer-events:none;background:var(--ink);color:var(--bg);font:12px/1.45 var(--f-mono);padding:8px 10px;border-radius:8px;z-index:50;max-width:240px;white-space:nowrap}
+/* phone mockups */
+.mockrow{display:grid;grid-template-columns:260px minmax(0,1fr);gap:24px;align-items:start}
+.phone{width:100%;max-width:260px;aspect-ratio:9/17;background:var(--phone);border-radius:34px;padding:10px;box-shadow:0 12px 30px rgba(10,20,50,.18)}
+.screen{height:100%;border-radius:26px;background:linear-gradient(180deg,var(--sky1),var(--sky2));position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;padding:16px 12px;gap:10px;color:#fff;font-family:var(--f-display)}
+.hud{width:100%;display:flex;justify-content:space-between;font:800 13px var(--f-display)}
+.hud span{background:rgba(0,0,0,.25);padding:3px 9px;border-radius:99px}
+.offer{background:#fff;color:#14213f;border-radius:18px;width:100%;padding:14px 12px;display:flex;flex-direction:column;gap:8px;align-items:center;text-align:center;box-shadow:0 6px 0 rgba(0,0,0,.15)}
+.offer h4{margin:0;font:800 18px/1.1 var(--f-display);color:#e2462f}
+.offer .streak{font:600 11.5px var(--f-body);color:#4a5672}
+.offer .items{display:flex;gap:6px;justify-content:center}
+.offer .items div{background:#eaf3ff;border-radius:10px;padding:6px 6px;font:600 10px var(--f-body);color:#1f3d7a;display:flex;flex-direction:column;align-items:center;gap:2px;min-width:56px}
+.offer .items b{font:800 16px var(--f-display)}
+.buy{background:#4cc31a;color:#fff;border:0;border-radius:12px;font:800 16px var(--f-display);padding:9px 18px;width:100%;box-shadow:0 4px 0 #2f8a0c}
+.ghost{background:transparent;border:0;color:#8590a8;font:600 11px var(--f-body);text-decoration:underline}
+.ribbon{background:var(--coin);color:#1b1300;font:800 11px var(--f-display);padding:2px 10px;border-radius:99px}
+.lives{display:flex;gap:4px;font-size:22px;min-height:30px}
+.heart{width:26px;height:24px;display:inline-block;position:relative;transition:transform .3s}
+.heart svg{width:100%;height:100%}
+.crew{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:100%}
+.mate{background:rgba(255,255,255,.18);border-radius:12px;padding:6px 4px;display:flex;flex-direction:column;align-items:center;gap:3px;font:600 10px var(--f-body)}
+.mate .av{width:28px;height:28px;border-radius:50%}
+.mate.sent{background:rgba(255,255,255,.4)}
+.btn{font:600 14px var(--f-body);border-radius:10px;padding:9px 14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+/* simulator */
+.sim{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:20px}
+.ctrl{display:flex;flex-direction:column;gap:4px}
+.ctrl label{display:flex;justify-content:space-between;font-size:13px;color:var(--ink-2);gap:8px}
+.ctrl output{font:600 13px var(--f-mono);color:var(--ink);font-variant-numeric:tabular-nums}
+.ctrl input{width:100%;accent-color:var(--accent)}
+.ctrls{display:flex;flex-direction:column;gap:12px}
+.ctrls h4{margin:6px 0 0;font:600 11.5px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.result{display:flex;flex-direction:column;gap:14px}
+.big{font:800 44px/1 var(--f-display);font-variant-numeric:tabular-nums;letter-spacing:-.03em}
+.big.pos{color:var(--good)} .big.neg{color:var(--bad)}
+/* 2x2 */
+.matrix{display:grid;grid-template-columns:auto 1fr 1fr;gap:6px;font-size:13px}
+.matrix div{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.matrix .h{background:transparent;border:0;font:600 11px var(--f-mono);color:var(--muted);text-transform:uppercase;letter-spacing:.05em;display:flex;align-items:center}
+.matrix b{display:block;font-family:var(--f-display);font-size:15px;color:var(--ink)}
+/* phases */
+.phases{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;counter-reset:ph}
+.phase{border-top:3px solid var(--accent);background:var(--surface);border-radius:0 0 12px 12px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;border-left:1px solid var(--line);border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.phase:nth-child(2){border-top-color:var(--s3)} .phase:nth-child(3){border-top-color:var(--coin)}
+.phase small{font:600 11px var(--f-mono);color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.funnel{display:flex;flex-direction:column;gap:8px}
+.funnel div{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:flex;gap:14px;align-items:baseline;flex-wrap:wrap}
+.funnel b{font-family:var(--f-display)}
+/* explorer */
+.steps{display:flex;gap:6px;flex-wrap:wrap}
+.steps button{font:600 12.5px var(--f-body);border:1px solid var(--line);background:var(--surface);color:var(--ink-2);border-radius:99px;padding:6px 12px;cursor:pointer}
+.steps button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.steps button span{font-family:var(--f-mono);margin-right:6px;opacity:.7}
+.explore{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:20px;align-items:start}
+.find{display:flex;flex-direction:column;gap:10px}
+.find .so{background:var(--surface-2);border-radius:10px;padding:12px 14px;font-size:14px;color:var(--ink)}
+.formula{font:13px/1.7 var(--f-mono);background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px;overflow-x:auto;white-space:pre;color:var(--ink)}
+.formula em{font-style:normal;color:var(--accent)}
+footer{color:var(--muted);font-size:12.5px;border-top:1px solid var(--line);padding-top:16px}
+@media (max-width:900px){
+  .wrap{grid-template-columns:minmax(0,1fr);gap:24px}
+  nav.rail{position:static;flex-direction:row;flex-wrap:wrap}
+  nav.rail .brand,nav.rail .hint{width:100%;margin:0}
+  .explore,.sim,.mockrow{grid-template-columns:minmax(0,1fr)}
+  .phone{margin:0 auto}
+}
+@media (max-width:640px){
+  .grid2,.grid3,.phases{grid-template-columns:minmax(0,1fr)}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .matrix{font-size:12px}
+}
+
+/* ---- game-UI mockups (fixed game look, intentionally not themed) ---- */
+.mockrow{grid-template-columns:290px minmax(0,1fr)}
+.gphone{width:100%;max-width:290px;aspect-ratio:9/18.5;background:#0b1226;border-radius:38px;padding:9px;box-shadow:0 14px 34px rgba(10,20,50,.22)}
+.gscreen{height:100%;border-radius:30px;position:relative;overflow:hidden;background:linear-gradient(180deg,#2bb8ff 0%,#1a93f2 100%);font-family:"Lilita One","Arial Rounded MT Bold",system-ui,sans-serif;color:#fff}
+.gscreen .board{position:absolute;inset:56px 0 0;display:grid;grid-template-columns:repeat(4,1fr);gap:14px;padding:26px 22px;opacity:.9}
+.gscreen .board i{aspect-ratio:1;border-radius:50%;background:#16306e;box-shadow:inset 0 0 0 5px #f08a1c, inset 0 6px 0 5px #0c1d48}
+.gscreen .dim{position:absolute;inset:0;background:rgba(6,14,40,.55)}
+.ghud{position:absolute;top:12px;left:10px;right:10px;display:flex;justify-content:space-between;align-items:center;z-index:2}
+.gpill{display:flex;align-items:center;gap:4px;background:rgba(40,10,40,.45);border-radius:99px;padding:2px 10px 2px 2px;font-size:15px}
+.gpill.coin{padding:2px 2px 2px 12px}
+.gpill svg{width:28px;height:28px;flex:none}
+.gs{-webkit-text-stroke:3px #1b2a72;paint-order:stroke fill;letter-spacing:.01em}
+.gs.thin{-webkit-text-stroke:2px #1b2a72}
+.gpop{position:absolute;left:12px;right:12px;top:66px;bottom:16px;z-index:3;display:flex;flex-direction:column}
+.gframe{flex:1;background:#ff9d1f;border-radius:24px;padding:5px;box-shadow:0 5px 0 #d45d14;display:flex;flex-direction:column;min-height:0}
+.gbody{flex:1;background:linear-gradient(180deg,#5ad0ff,#2fb0f5);border-radius:20px;padding:30px 10px 12px;display:flex;flex-direction:column;gap:9px;align-items:center;min-height:0}
+.gbanner{align-self:center;margin-bottom:-22px;position:relative;z-index:2;background:linear-gradient(180deg,#ffe14d,#ffb21a);border-radius:14px;box-shadow:0 4px 0 #e8452c;padding:5px 18px;font-size:21px;white-space:nowrap}
+.gsub{font-size:13.5px;text-align:center;line-height:1.15}
+.gprog{width:100%;background:#e7f6ff;border-radius:14px;padding:7px 9px;display:flex;flex-direction:column;gap:6px;color:#1b2a72}
+.gprog .r{display:flex;align-items:center;justify-content:space-between;font-size:12.5px;gap:6px}
+.gbar{flex:1;height:12px;background:#1b2a72;border-radius:99px;overflow:hidden;position:relative}
+.gbar b{position:absolute;inset:0 auto 0 0;background:linear-gradient(180deg,#9df046,#4cc31a);border-radius:99px}
+.gtray{width:100%;background:#2349c9;border-radius:14px;overflow:hidden;box-shadow:inset 0 0 0 2px #3a6cf0}
+.gtray .it{display:grid;grid-template-columns:repeat(3,1fr)}
+.gtray .it>div{display:flex;flex-direction:column;align-items:center;padding:8px 2px 0}
+.gtray svg{width:40px;height:40px}
+.gtray .lb{display:grid;grid-template-columns:repeat(3,1fr);background:#1a2f9e;text-align:center;font-size:14px;padding:4px 0}
+.gtag{position:absolute;right:-4px;top:-14px;transform:rotate(12deg);background:linear-gradient(180deg,#ffd84a,#f2a300);border-radius:10px;padding:4px 9px;font-size:15px;box-shadow:0 3px 0 #b86f00;z-index:3}
+.gbtn{width:100%;border:0;border-radius:16px;background:linear-gradient(180deg,#8fe82e,#4cbf12);box-shadow:0 5px 0 #2d8a0b, inset 0 2px 0 rgba(255,255,255,.45);color:#fff;font:inherit;font-size:24px;padding:8px 0 10px;cursor:pointer}
+.gbtn[disabled]{filter:saturate(.6) brightness(.95);cursor:default}
+.gbtn2{width:100%;border:0;border-radius:14px;background:#1d3fb0;box-shadow:0 4px 0 #13287a;color:#fff;font:inherit;font-size:14px;padding:7px 0;display:flex;align-items:center;justify-content:center;gap:4px;opacity:.75}
+.gbtn2 svg{width:20px;height:20px}
+.gskip{font-size:12px;color:#e7f6ff;opacity:.9;text-decoration:underline;background:none;border:0;font-family:inherit}
+.gtimer{display:flex;align-items:center;gap:6px;justify-content:center}
+.gtimer .h{width:64px;height:58px;position:relative;display:grid;place-items:center}
+.gtimer .h svg{position:absolute;inset:0;width:100%;height:100%}
+.gtimer .h span{position:relative;font-size:26px}
+.gtimer .t{background:#1b2a72;border-radius:99px;padding:3px 12px;font-size:16px}
+.glist{width:100%;background:#e7f6ff;border-radius:14px;padding:4px 8px;display:flex;flex-direction:column}
+.grow{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:2px solid #c9e6f7;color:#1b2a72;font-size:14px}
+.grow:last-child{border-bottom:0}
+.grow .av{width:26px;height:26px;border-radius:50%;position:relative;flex:none;box-shadow:inset 0 -3px 0 rgba(0,0,0,.18)}
+.grow .nm{flex:1}
+.grow .st{border-radius:10px;padding:3px 8px;font-size:12px;background:#9aa9c4;color:#fff;min-width:58px;text-align:center;box-shadow:0 2px 0 #6c7a96}
+.grow.sent .st{background:#4cc31a;box-shadow:0 2px 0 #2d8a0b}
+.grow.pop .st{animation:gpop .35s ease}
+@keyframes gpop{0%{transform:scale(.6)}70%{transform:scale(1.15)}100%{transform:scale(1)}}
+.gfoot{font-size:12px;color:#fff;text-align:center}
+@media (max-width:900px){.gphone{margin:0 auto}}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+html{scroll-behavior:smooth}
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+<nav class="rail" aria-label="Sections">
+  <div class="brand">Hole People<br>Monetization Case</div>
+  <a href="#intro"><span>00</span>Playtest findings</a>
+  <a href="#q1"><span>Q1</span>New offer &amp; RVs</a>
+  <a href="#q2"><span>Q2</span>Crews</a>
+  <a href="#q3"><span>Q3</span>ARPDAU drop</a>
+  <a href="#extra"><span>+</span>Core-loop note</a>
+  <div class="hint">Step through with <kbd>←</kbd> <kbd>→</kbd></div>
+</nav>
+
+<main>
+<!-- ============ INTRO ============ -->
+<section id="intro">
+  <div class="eyebrow">Monetization Specialist case · Ömer Yenal · November 2026</div>
+  <h1>Hole People: where the money is left on the table</h1>
+
+  <div class="stats">
+    <div class="stat"><b>40</b><small>coins earned per win (×2 with a rewarded video)</small></div>
+    <div class="stat"><b>900</b><small>coins to continue a failed level, about 22 wins of income</small></div>
+    <div class="stat"><b>30 min</b><small>per life; 5 lives take 2.5 hours to refill</small></div>
+    <div class="stat"><b>0</b><small>interstitials seen in early levels; RV only at level end and at 0 lives</small></div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h3>The store hides its own discount</h3>
+      <p class="note" style="margin-top:4px">Price per 1,000 coins, TRY, by coin pack</p>
+      <svg class="chart" id="chartStore" viewBox="0 0 420 230" role="img" aria-label="Bar chart of price per 1,000 coins by pack"></svg>
+      <p style="font-size:14px">Bigger packs are up to 50% cheaper per coin, but no pack says so. Two upgrades (5k→10k, 25k→50k) give no discount at all.</p>
+    </div>
+    <div class="card" style="display:flex;flex-direction:column;gap:10px">
+      <h3>What the game already has</h3>
+      <ul class="clean">
+        <li><strong>Star Quest</strong> (lvl 30): a timed star bar. Wins earn stars, win streaks earn more, and milestones pay unlimited lives, boosters and coins (e.g. 350 stars → 150 coins)</li>
+        <li><strong>Collection album</strong> (lvl 40) with <strong>Daily Packs</strong> for 7 / 15 / 30 first-try wins. A coin continue still counts as a first-try win.</li>
+        <li><strong>Store</strong>: 6 coin packs, 3 bundles, No Ads (₺399.99), No Ads bundle</li>
+      </ul>
+      <h3 style="margin-top:6px">What it doesn't</h3>
+      <ul class="clean">
+        <li>A first-purchase or starter offer</li>
+        <li>Any offer or RV at the fail screen; continue costs 900 coins only</li>
+        <li>Single boosters for sale; any social layer</li>
+        <li>A use for the "battery" points earned after each level</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="insight">
+    <div class="eyebrow">Key insight</div>
+    <p>The strongest emotional moment in the game is failing while a streak or Daily Pack progress is at stake. The game's only answer is "pay 900 coins". Most non-payers hold 300–900 coins, so for them that moment ends the session.</p>
+  </div>
+</section>
+
+<!-- ============ Q1 ============ -->
+<section id="q1">
+  <div class="eyebrow">Question 1</div>
+  <h2>Turn the fail moment into a first purchase, and give non-payers a way forward</h2>
+  <div class="qtext">Goal: increase the title's overall revenue. (a) a new IAP offer, (b) new rewarded video placements, (c) how to measure and test.</div>
+
+  <div class="subhead"><span class="tag">1a</span><h3>New IAP offer: Streak Saver</h3></div>
+  <div class="mockrow">
+    <div class="gphone" aria-label="Mockup of the Streak Saver offer on the fail screen, in the game's style">
+      <div class="gscreen"><div class="board"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="dim"></div>
+        <div class="ghud"><div class="gpill"><svg viewBox="0 0 32 30"><path d="M16 28S3 20.5 3 11.2A7 7 0 0 1 16 7a7 7 0 0 1 13 4.2C29 20.5 16 28 16 28z" fill="#ff3352" stroke="#9e0b22" stroke-width="2.2"/><path d="M9 9.5c1.5-2 4-2 5 .5" stroke="#ff9aa9" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg><span class="gs thin">2</span></div><div class="gpill coin"><span class="gs thin">330</span><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" fill="#ffc21a" stroke="#d98a00" stroke-width="2.4"/><circle cx="16" cy="16" r="9.5" fill="#ffd54d"/><ellipse cx="16" cy="16.5" rx="8" ry="3" fill="none" stroke="#e39200" stroke-width="2" transform="rotate(-15 16 16)"/><circle cx="16" cy="15" r="3.6" fill="#e39200"/></svg></div></div>
+        <div class="gpop">
+          <div class="gbanner gs">STREAK SAVER</div>
+          <div class="gframe" style="position:relative"><span class="gtag gs thin">3X VALUE</span><div class="gbody">
+            <div class="gsub gs thin">Out of space!<br>Don't lose your progress</div>
+            <div class="gprog">
+              <div class="r"><span>Star Quest streak</span><span>🔥 5 wins</span></div>
+              <div class="r"><span>Daily Pack</span><div class="gbar"><b style="width:86%"></b></div><span>6/7</span></div>
+            </div>
+            <div class="gtray"><div class="it"><div><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" fill="#4cc31a" stroke="#fff" stroke-width="3"/><path d="M16 12l11 8-11 8z" fill="#fff"/></svg></div><div><svg viewBox="0 0 40 40"><path d="M20 35S5 26.5 5 15.8A8 8 0 0 1 20 11a8 8 0 0 1 15 4.8C35 26.5 20 35 20 35z" fill="#ff3352" stroke="#fff" stroke-width="2.5"/><path d="M14.5 20.5c0-2 1.3-3.2 3-3.2 2.6 0 3.8 6.4 6.5 6.4 1.7 0 3-1.2 3-3.2s-1.3-3.2-3-3.2c-2.7 0-3.9 6.4-6.5 6.4-1.7 0-3-1.2-3-3.2z" fill="none" stroke="#fff" stroke-width="2.4"/></svg></div><div><svg viewBox="0 0 40 40"><path d="M14 27l-4 10h20l-4-10z" fill="#fff3a8" opacity=".75"/><ellipse cx="20" cy="17" rx="7" ry="6.5" fill="#8ff0ff" stroke="#fff" stroke-width="1.5"/><ellipse cx="20" cy="22" rx="15" ry="6" fill="#7b5cff" stroke="#fff" stroke-width="2"/><circle cx="12" cy="22.5" r="1.6" fill="#ffd84a"/><circle cx="20" cy="24" r="1.6" fill="#ffd84a"/><circle cx="28" cy="22.5" r="1.6" fill="#ffd84a"/></svg></div></div>
+              <div class="lb gs thin"><span>Continue</span><span>30m</span><span>x1</span></div></div>
+            <button class="gbtn gs" tabindex="-1">₺99,99</button>
+            <div class="gbtn2 gs thin">Continue <svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" fill="#ffc21a" stroke="#d98a00" stroke-width="2.4"/><circle cx="16" cy="16" r="9.5" fill="#ffd54d"/><ellipse cx="16" cy="16.5" rx="8" ry="3" fill="none" stroke="#e39200" stroke-width="2" transform="rotate(-15 16 16)"/><circle cx="16" cy="15" r="3.6" fill="#e39200"/></svg> 900</div>
+            <button class="gskip" tabindex="-1">Give up (−1 life)</button>
+          </div></div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;min-width:0">
+      <div class="tbl"><table>
+        <tr><th>Contents</th><td>Continue the current level + 30 min unlimited lives + 1 UFO booster</td></tr>
+        <tr><th>Price</th><td>$1.99 tier (≈ ₺99.99). Store value ≈ 1,300 coins + lives, labelled "3× value"</td></tr>
+        <tr><th>Target</th><td>Level 30+, <strong>no purchase yet</strong> (or none in 30 days), <strong>can't afford</strong> the 900-coin continue, and has something to lose: an active streak or Daily Pack progress ≥ 50%</td></tr>
+        <tr><th>When / where</th><td>Fail screen, in place of the coin button the player can't afford</td></tr>
+        <tr><th>Frequency</th><td>Max 1 per day, 3 per week; hidden for 7 days after any purchase</td></tr>
+      </table></div>
+      <ul class="clean">
+        <li><strong>Right moment:</strong> loss aversion peaks at the fail screen. Pay-to-continue and life refills are how top puzzle games make most of their IAP revenue.</li>
+        <li><strong>Right player:</strong> it turns non-payers into first-time payers, the biggest lever on long-term IAP. Players who pay once are far more likely to pay again.</li>
+        <li><strong>Teaches value:</strong> UFO and unlimited lives are samples of what the bigger bundles contain.</li>
+        <li><strong>Cheap to build:</strong> a new trigger on existing systems, no new content.</li>
+      </ul>
+      <p class="note">Quick wins alongside: "+25% / Best value" labels on coin packs, fix the flat tiers, sell single boosters priced by power (UFO &gt; Rainbow &gt; +1 Slot).</p>
+    </div>
+  </div>
+
+  <div class="subhead"><span class="tag">1b</span><h3>Three new rewarded video placements</h3></div>
+  <div class="grid3">
+    <div class="card"><span class="pill">Fail screen</span><h3 style="margin-top:8px">RV Continue</h3><p style="font-size:14px">Non-payers with &lt; 900 coins, shown <strong>after</strong> Streak Saver is declined. Gives +1 slot (weaker than the paid continue). 1 per level, 3 per day.</p></div>
+    <div class="card"><span class="pill">Store</span><h3 style="margin-top:8px">Daily Free Gift</h3><p style="font-size:14px">Everyone. Coins (e.g. 100) or a random booster, 3 per day. Answers the top store-review complaint: no way to earn coins except winning.</p></div>
+    <div class="card"><span class="pill">Before Hard levels</span><h3 style="margin-top:8px">Free booster</h3><p style="font-size:14px">Players with 0 of a booster when a Hard level starts. 1 free +1 Slot per Hard level.</p></div>
+  </div>
+  <div class="tbl"><table>
+    <tr><th>Area</th><th>Expected effect</th></tr>
+    <tr><td>Player experience</td><td><span class="pill good">better</span> Fewer dead ends, a fairer economy. All opt-in.</td></tr>
+    <tr><td>Retention</td><td><span class="pill good">up</span> The fail screen and the lvl-30 wall are where players quit; RVs let them pass instead.</td></tr>
+    <tr><td>Ad revenue</td><td><span class="pill good">up</span> More RV impressions per DAU at the highest-eCPM format. Today only x2 and +1 life use RV.</td></tr>
+    <tr><td>IAP revenue</td><td><span class="pill bad">risk</span> Cannibalization: some buyers watch instead. Mitigated by a weaker reward than paid, daily caps, paid offer shown first, payers excluded. The test decides.</td></tr>
+  </table></div>
+
+  <div class="card" style="display:flex;flex-direction:column;gap:16px">
+    <div><h3>What could this be worth?</h3><p class="note">Illustrative model with assumed inputs, not Rollic data. Move the sliders to stress-test the idea.</p></div>
+    <div class="sim">
+      <div class="ctrls" id="simCtrls"></div>
+      <div class="result">
+        <div><div class="note">Net change in ARPDAU</div><div class="big" id="simBig">+0%</div><div class="note" id="simSub"></div></div>
+        <svg class="chart" id="chartSim" viewBox="0 0 420 200" role="img" aria-label="Revenue bridge of the change"></svg>
+        <p class="note" id="simRead"></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="subhead"><span class="tag">1c</span><h3>Measuring it: a 2×2 test, because the two changes interact</h3></div>
+  <div class="grid2">
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="matrix">
+        <div class="h"></div><div class="h">No new RVs</div><div class="h">New RVs</div>
+        <div class="h">No offer</div><div><b>A · Control</b>today's game</div><div><b>C · RVs only</b>ad upside, IAP risk</div>
+        <div class="h">Streak Saver</div><div><b>B · Offer only</b>conversion upside</div><div><b>D · Both</b>does RV eat the offer?</div>
+      </div>
+      <p style="font-size:14px">25% of new installs per arm, randomized by user ID. Tier-1 and emerging markets read separately. Run ≥ 2 full weeks, decide on D14 cumulative ARPU, confirm on D30.</p>
+    </div>
+    <div class="tbl"><table>
+      <tr><th>Type</th><th>Metrics</th></tr>
+      <tr><td><strong>North star</strong></td><td>Cumulative ARPU (IAP + ads) at D7 / D14 / D30 per cohort</td></tr>
+      <tr><td>IAP</td><td>Payer conversion, first-purchase rate, offer CR, ARPPU, repeat purchase in 14 days, coin-pack revenue (cannibalization)</td></tr>
+      <tr><td>Ads</td><td>RV impressions/DAU, RV engagement per placement, ad ARPDAU, eCPM</td></tr>
+      <tr><td>Guardrails</td><td>D1/D7/D30 retention, sessions/day, churn per level (lvl 30), store rating</td></tr>
+    </table></div>
+  </div>
+  <p><strong>Decision rule:</strong> ship the winning arm if D14 cumulative ARPU is significantly higher and D7 retention drops less than ~1% relative. Revenue per user is heavy-tailed, so I'd winsorize the top 1% of spenders (or use CUPED / bootstrap) and size the test for a 3–5% minimum detectable effect. Roll out 10% → 50% → 100% to catch novelty effects.</p>
+</section>
+
+<!-- ============ Q2 ============ -->
+<section id="q2">
+  <div class="eyebrow">Question 2</div>
+  <h2>Borrow Royal Match's Teams, as lightweight "Crews"</h2>
+  <div class="qtext">Pick a top-grossing puzzle game, name a monetization feature Hole People doesn't have: how it works, why pick it, how to adapt it, the risks, and how to validate it.</div>
+
+  <div class="grid2">
+    <div class="card" style="display:flex;flex-direction:column;gap:8px">
+      <h3>Why Teams</h3>
+      <p style="font-size:14px">Royal Match was 2025's highest-grossing puzzle game (~$1.4B IAP). Hole People already has its pass (Golden Pass), its streak (Star Quest) and its album (Collection). The one big system missing is <strong>social</strong>.</p>
+      <ul class="clean" style="font-size:14px">
+        <li>Unlocks at level 21, right at the first difficulty spike</li>
+        <li>Out of lives? Ask the team; teammates send lives with one tap (capped)</li>
+        <li>Weekly team battles on a shared score; team gifts make purchases social</li>
+      </ul>
+    </div>
+    <div class="card" style="display:flex;flex-direction:column;gap:8px">
+      <h3>Why it works</h3>
+      <ul class="clean" style="font-size:14px">
+        <li><strong>Reciprocity:</strong> "they sent me a life, I'll send one back" brings players back daily</li>
+        <li><strong>Softens the churn moment:</strong> running out of lives becomes a social action instead of a quit</li>
+        <li><strong>LiveOps platform:</strong> team races, chests and gift offers become possible</li>
+        <li><strong>Revenue through lifetime:</strong> more retained days means more fail moments and offers</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="mockrow">
+    <div class="gphone" aria-label="Interactive mockup of asking a crew for lives, in the game's style">
+      <div class="gscreen"><div class="board"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="dim"></div>
+        <div class="ghud"><div class="gpill"><svg viewBox="0 0 32 30"><path d="M16 28S3 20.5 3 11.2A7 7 0 0 1 16 7a7 7 0 0 1 13 4.2C29 20.5 16 28 16 28z" fill="#ff3352" stroke="#9e0b22" stroke-width="2.2"/><path d="M9 9.5c1.5-2 4-2 5 .5" stroke="#ff9aa9" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg><span class="gs thin" id="livesHud">0</span></div><div class="gpill coin"><span class="gs thin">330</span><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" fill="#ffc21a" stroke="#d98a00" stroke-width="2.4"/><circle cx="16" cy="16" r="9.5" fill="#ffd54d"/><ellipse cx="16" cy="16.5" rx="8" ry="3" fill="none" stroke="#e39200" stroke-width="2" transform="rotate(-15 16 16)"/><circle cx="16" cy="15" r="3.6" fill="#e39200"/></svg></div></div>
+        <div class="gpop">
+          <div class="gbanner gs">OUT OF LIVES</div>
+          <div class="gframe"><div class="gbody">
+            <div class="gtimer"><div class="h"><svg viewBox="0 0 32 30"><path d="M16 28S3 20.5 3 11.2A7 7 0 0 1 16 7a7 7 0 0 1 13 4.2C29 20.5 16 28 16 28z" fill="#ff3352" stroke="#9e0b22" stroke-width="2.2"/><path d="M9 9.5c1.5-2 4-2 5 .5" stroke="#ff9aa9" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg><span class="gs" id="lives">0</span></div><span class="t gs thin">29:12</span></div>
+            <div class="gsub gs thin">Ask your crew for help!</div>
+            <div class="glist" id="crew"></div>
+            <button class="gbtn gs" id="askBtn">ASK CREW</button>
+            <div class="gfoot gs thin" id="capNote">Crew lives today: 0/5</div>
+          </div></div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;min-width:0">
+      <h3>Why it fits Hole People</h3>
+      <p>Same moment, same problem. Hole People's first wall is <strong>level 30</strong>, lives refill at <strong>30 min each</strong>, and the only exits are an RV for one life or 900 coins. That is exactly the churn point Royal Match solves with teams.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn primary" id="demoAsk">Try it: ask for lives</button><button class="btn" id="demoReset">Reset</button></div>
+      <div class="phases">
+        <div class="phase"><small>MVP</small><b>Life sharing</b><span style="font-size:13.5px;color:var(--ink-2)">Unlock at lvl 30, auto-join an active crew (≤ 30), 1 request per 30 min, max 5 lives/day, emotes only</span></div>
+        <div class="phase"><small>Phase 2</small><b>Crew Race</b><span style="font-size:13.5px;color:var(--ink-2)">Weekly: members' stars fill a crew score; top crews win boosters and lives</span></div>
+        <div class="phase"><small>Phase 3</small><b>Crew Gift</b><span style="font-size:13.5px;color:var(--ink-2)">A member's bundle purchase sends a small gift to the whole crew</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tbl"><table>
+    <tr><th>Risk</th><th>Mitigation</th></tr>
+    <tr><td><strong>Free lives cannibalize</strong> 900-coin refills and unlimited-life bundles</td><td>Daily cap on lives received; track life-related IAP separately in the test</td></tr>
+    <tr><td><strong>Dead crews</strong> give no lives, so the feature feels broken</td><td>Auto-assign to active crews, merge inactive crews, remove inactive members</td></tr>
+    <tr><td><strong>Audience fit</strong>: hybrid-casual players may be less social</td><td>Validate with a fake door and a minimal MVP before building events</td></tr>
+    <tr><td><strong>Build and moderation cost</strong></td><td>Phased rollout, no free chat in the MVP</td></tr>
+  </table></div>
+
+  <h3>Validating before a full rollout</h3>
+  <div class="funnel">
+    <div><span class="pill">Week 1</span><b>Fake door</b><span style="color:var(--ink-2);font-size:14px">"Crews – coming soon" button for a slice of lvl-30+ players. Low tap-through → stop before building.</span></div>
+    <div><span class="pill">Weeks 2–6</span><b>MVP A/B</b><span style="color:var(--ink-2);font-size:14px">Players reaching lvl 30, 50/50, one or two test markets. Social effects show on D30, so it runs 4–5 weeks.</span></div>
+    <div><span class="pill">After</span><b>Staged global rollout</b><span style="color:var(--ink-2);font-size:14px">Then A/B test Crew Race on top.</span></div>
+  </div>
+  <div class="tbl"><table>
+    <tr><th>Result</th><th>Rule (calibrate on historical data)</th></tr>
+    <tr><td><span class="pill good">Roll out</span></td><td>D30 retention up significantly (≈ +1 pp / +3% relative) <strong>and</strong> cumulative D30 ARPU at least equal to control</td></tr>
+    <tr><td><span class="pill coin">Iterate</span></td><td>High adoption but small retention gain: tune crew size, life cap, matching</td></tr>
+    <tr><td><span class="pill bad">Stop</span></td><td>Adoption below ~15% of eligible players, or D30 ARPU significantly down</td></tr>
+  </table></div>
+</section>
+
+<!-- ============ Q3 ============ -->
+<section id="q3">
+  <div class="eyebrow">Question 3</div>
+  <h2>ARPDAU fell 10% with flat DAU: find which part of revenue moved</h2>
+  <div class="qtext">Over two weeks ARPDAU dropped 10% while DAU stayed flat. Which breakdowns first, what hypotheses, which teams, what action for each finding?</div>
+
+  <div class="formula">ARPDAU = <em>IAP ARPDAU</em> + <em>Ad ARPDAU</em>
+
+IAP ARPDAU = payer conversion × ARPPU
+Ad ARPDAU  = Σ formats ( impressions per DAU × eCPM / 1000 )
+             impressions per DAU = sessions/DAU × ad opportunities/session × show rate</div>
+  <p>Every hypothesis maps to one term of this tree, so each check has a number that confirms or kills it. <strong>Flat DAU does not mean the same players</strong>: a shift in who plays can move ARPDAU while every segment is healthy.</p>
+
+  <div class="card" style="display:flex;flex-direction:column;gap:16px">
+    <div><h3>Walkthrough on a simulated title</h3><p class="note">Synthetic data with two planted causes, to show the order of the investigation. Click through the steps.</p></div>
+    <div class="steps" id="steps" role="tablist"></div>
+    <div class="explore">
+      <div style="min-width:0;display:flex;flex-direction:column;gap:8px">
+        <div class="legend" id="exLegend"></div>
+        <svg class="chart" id="chartEx" viewBox="0 0 520 260" role="img" aria-label="Chart for the current investigation step"></svg>
+      </div>
+      <div class="find" id="exFind"></div>
+    </div>
+  </div>
+
+  <div class="subhead"><span class="tag">3a</span><h3>Breakdowns, in order</h3></div>
+  <div class="tbl"><table>
+    <tr><th>#</th><th>Breakdown</th><th>Why first</th></tr>
+    <tr><td class="num">0</td><td>Data sanity: tracking, reporting lag, FX, refunds</td><td>An hour of checks can save days</td></tr>
+    <tr><td class="num">1</td><td>IAP vs ads, and ad format</td><td>The biggest fork: different causes, different owners</td></tr>
+    <tr><td class="num">2</td><td>Daily trend, annotated with releases, tests, events</td><td>A step points to an event; a slide points to mix or market</td></tr>
+    <tr><td class="num">3</td><td>Country / tier, split into mix vs rate</td><td>Flat DAU can hide a shift to cheaper geos</td></tr>
+    <tr><td class="num">4</td><td>Platform and app version</td><td>Isolates release and SDK issues</td></tr>
+    <tr><td class="num">5</td><td>Segments: new vs mature, UA source, payers, whales</td><td>A few whales can move IAP 10% alone</td></tr>
+    <tr><td class="num">6</td><td>Driver level: eCPM vs impressions per network; conversion vs ARPPU per SKU</td><td>Names the exact broken term</td></tr>
+  </table></div>
+
+  <div class="subhead"><span class="tag">3b</span><h3>Hypotheses and what each would look like</h3></div>
+  <div class="tbl"><table>
+    <tr><th>Group</th><th>Hypothesis</th><th>Signature in the data</th></tr>
+    <tr><td>Data</td><td>Tracking or SDK bug, reporting lag, FX, refunds</td><td>Only one source drops; store and network reports disagree with the dashboard</td></tr>
+    <tr><td>User mix</td><td>UA moved budget to cheaper geos or channels; more new users</td><td>Mix changed, per-segment ARPDAU stable</td></tr>
+    <tr><td>Ad market</td><td>Seasonal eCPM fall, weaker advertiser demand</td><td>eCPM down across networks and titles at once</td></tr>
+    <tr><td>Ad tech</td><td>Broken adapter, wrong floors, a bidder left</td><td>eCPM or fill down on one network or platform from a release date</td></tr>
+    <tr><td>Ad volume</td><td>Cap changed, placement broken, more No Ads buyers</td><td>Impressions per DAU down, eCPM flat</td></tr>
+    <tr><td>Product / IAP</td><td>Economy or difficulty change, offer or store bug, price change</td><td>Conversion or ARPPU down from a version or test variant</td></tr>
+    <tr><td>LiveOps</td><td>A strong event ended; the comparison period had a sale</td><td>A spike in the baseline, not a drop now</td></tr>
+    <tr><td>Whales</td><td>A few top spenders churned</td><td>Top-spender count down, everyone else normal</td></tr>
+    <tr><td>External</td><td>Competitor launch, holidays, platform policy</td><td>Same drop in other Rollic titles</td></tr>
+  </table></div>
+
+  <div class="grid2">
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="subhead"><span class="tag">3c</span><h3>Teams</h3></div>
+      <div class="tbl"><table>
+        <tr><td><strong>Data / BI</strong></td><td>validate data, run breakdowns</td></tr>
+        <tr><td><strong>Ad monetization</strong></td><td>mediation, floors, network eCPM and fill</td></tr>
+        <tr><td><strong>Ad network partners</strong></td><td>demand changes, adapter issues</td></tr>
+        <tr><td><strong>User acquisition</strong></td><td>geo, channel, budget changes</td></tr>
+        <tr><td><strong>Game team &amp; LiveOps</strong></td><td>releases, A/B tests, economy, calendar</td></tr>
+        <tr><td><strong>Engineering / QA</strong></td><td>SDK versions, payment flow, crashes</td></tr>
+        <tr><td><strong>Finance</strong></td><td>store payouts, FX, refunds</td></tr>
+        <tr><td><strong>Player support</strong></td><td>tickets on failed purchases or ads</td></tr>
+      </table></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="subhead"><span class="tag">3d</span><h3>Finding → action</h3></div>
+      <div class="tbl"><table>
+        <tr><td><strong>Mix shift</strong></td><td>Not a monetization problem: align with UA on ROAS by geo; geo-specific pricing and floors</td></tr>
+        <tr><td><strong>Market eCPM</strong></td><td>Set expectations, optimize floors, add bidders, lean on IAP and LiveOps</td></tr>
+        <tr><td><strong>Broken network</strong></td><td>Hotfix or roll back SDK, escalate with partner, add per-network alerts</td></tr>
+        <tr><td><strong>Fewer impressions</strong></td><td>Restore the placement, or A/B the cap change against retention</td></tr>
+        <tr><td><strong>Economy / test change</strong></td><td>Stop the variant, re-run with revenue guardrails</td></tr>
+        <tr><td><strong>Store bug</strong></td><td>Hotfix, compensate players, alert on purchase success rate</td></tr>
+        <tr><td><strong>Whale churn</strong></td><td>VIP outreach and personalized offers; track concentration</td></tr>
+        <tr><td><strong>Data issue</strong></td><td>Fix and backfill, add monitoring</td></tr>
+      </table></div>
+    </div>
+  </div>
+  <p><strong>Afterwards:</strong> automated anomaly alerts on ARPDAU by source, geo, platform and network, so the next drop is caught in a day, not two weeks.</p>
+</section>
+
+<!-- ============ EXTRA ============ -->
+<section id="extra">
+  <div class="eyebrow">Additional observation</div>
+  <h2>Any level can be brute-forced, so players rarely fail</h2>
+  <div class="grid2">
+    <div class="card" style="display:flex;flex-direction:column;gap:8px">
+      <h3>Problem</h3>
+      <p style="font-size:14px">Tapping a blocked group has no cost: it only shakes. Players can try every option until one works. Fewer fails means less demand for continues, boosters and lives, the moments where puzzle games earn.</p>
+    </div>
+    <div class="card" style="display:flex;flex-direction:column;gap:8px">
+      <h3>Idea, to test separately</h3>
+      <p style="font-size:14px">On <strong>Hard levels only</strong>, give 3–5 mistakes. When they run out: +1 via RV, or +3 for coins (a new coin sink). Optional "Hard mode" with bigger rewards. Casual players dislike penalties, so retention is the main guardrail.</p>
+    </div>
+  </div>
+  <footer>Market figures: AppMagic, Naavik, Sensor Tower public reports. Store prices and game details: own playtest, Turkey App Store, November 2026. Charts in Q1 and Q3 use illustrative inputs and synthetic data.</footer>
+</section>
+</main>
+</div>
+<div id="tip" hidden></div>
+
+<script>
+(function(){
+const $=s=>document.querySelector(s);
+const NS="http://www.w3.org/2000/svg";
+const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+function el(tag,attrs,parent){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e}
+function clear(svg){while(svg.firstChild)svg.removeChild(svg.firstChild)}
+const tip=$("#tip");
+function showTip(html,x,y){tip.innerHTML=html;tip.hidden=false;const w=tip.offsetWidth;let left=x+14;if(left+w>window.innerWidth-8)left=x-w-14;tip.style.left=left+"px";tip.style.top=(y+14)+"px"}
+function hideTip(){tip.hidden=true}
+
+/* ---------- nav highlight + arrow keys ---------- */
+const secs=[...document.querySelectorAll("main section")];
+const links=[...document.querySelectorAll("nav.rail a")];
+function current(){let i=0;secs.forEach((s,k)=>{if(s.getBoundingClientRect().top<window.innerHeight*0.35)i=k});return i}
+function mark(){const i=current();links.forEach((a,k)=>a.classList.toggle("on",k===i))}
+window.addEventListener("scroll",mark,{passive:true});mark();
+document.addEventListener("keydown",e=>{
+  if(e.target.closest("input,textarea,select"))return;
+  if(e.key==="ArrowRight"||e.key==="PageDown"){const i=Math.min(secs.length-1,current()+1);secs[i].scrollIntoView();e.preventDefault()}
+  if(e.key==="ArrowLeft"||e.key==="PageUp"){const i=Math.max(0,current()-1);secs[i].scrollIntoView();e.preventDefault()}
+});
+
+/* ---------- store chart ---------- */
+function drawStore(){
+  const svg=$("#chartStore");clear(svg);
+  const d=[["1k",1000,99.99],["5k",5000,399.99],["10k",10000,799.99],["25k",25000,1499.99],["50k",50000,2999.99],["100k",100000,4999.99]];
+  const W=420,H=230,m={l:34,r:8,t:22,b:26},iw=W-m.l-m.r,ih=H-m.t-m.b,max=110;
+  const y=v=>m.t+ih-v/max*ih;
+  [0,25,50,75,100].forEach(v=>{el("line",{x1:m.l,x2:W-m.r,y1:y(v),y2:y(v),stroke:css("--grid"),"stroke-width":1},svg);const t=el("text",{x:m.l-6,y:y(v)+4,"text-anchor":"end"},svg);t.textContent="₺"+v});
+  const bw=iw/d.length;
+  d.forEach((r,i)=>{
+    const unit=r[2]/r[1]*1000, flat=(i===2||i===4);
+    const x=m.l+i*bw+bw*0.2,w=bw*0.6,h=ih-(y(unit)-m.t);
+    const p=`M${x},${m.t+ih} V${y(unit)+4} q0,-4 4,-4 H${x+w-4} q4,0 4,4 V${m.t+ih} Z`;
+    el("path",{d:p,fill:flat?css("--s2"):css("--s1")},svg);
+    const t=el("text",{x:x+w/2,y:y(unit)-6,"text-anchor":"middle",class:"lbl"},svg);t.textContent="₺"+Math.round(unit);
+    const tx=el("text",{x:x+w/2,y:H-8,"text-anchor":"middle"},svg);tx.textContent=r[0];
+    const hit=el("rect",{x:m.l+i*bw,y:m.t,width:bw,height:ih,fill:"transparent"},svg);
+    hit.addEventListener("mousemove",e=>showTip(`${r[1].toLocaleString("en")} coins<br>₺${r[2].toLocaleString("en")}<br>₺${unit.toFixed(1)} per 1,000${flat?"<br>no discount vs previous pack":""}`,e.clientX,e.clientY));
+    hit.addEventListener("mouseleave",hideTip);
+  });
+  el("line",{x1:m.l,x2:W-m.r,y1:m.t+ih,y2:m.t+ih,stroke:css("--axis")},svg);
+  const lg=el("text",{x:W-m.r,y:12,"text-anchor":"end"},svg);lg.textContent="orange = same unit price as the pack before";
+}
+
+/* ---------- Q1 simulator ---------- */
+const inputs=[
+  {h:"Baseline"},
+  {id:"dau",label:"DAU",min:20000,max:500000,step:10000,v:100000,f:v=>v.toLocaleString("en")},
+  {id:"iap",label:"Baseline IAP ARPDAU",min:0.01,max:0.2,step:0.005,v:0.06,f:v=>"$"+v.toFixed(3)},
+  {id:"ad",label:"Baseline ad ARPDAU",min:0.005,max:0.1,step:0.005,v:0.03,f:v=>"$"+v.toFixed(3)},
+  {h:"Streak Saver"},
+  {id:"elig",label:"DAU eligible at a fail screen, per day",min:1,max:20,step:0.5,v:6,f:v=>v+"%"},
+  {id:"cr",label:"Offer conversion",min:0.5,max:10,step:0.5,v:3,f:v=>v+"%"},
+  {id:"price",label:"Price",min:0.99,max:4.99,step:1,v:1.99,f:v=>"$"+v.toFixed(2)},
+  {h:"New rewarded videos"},
+  {id:"reach",label:"Non-payers watching ≥ 1 new RV per day",min:0,max:60,step:1,v:25,f:v=>v+"%"},
+  {id:"rvs",label:"New RVs per watcher per day",min:1,max:5,step:0.5,v:2,f:v=>v.toFixed(1)},
+  {id:"ecpm",label:"RV eCPM",min:2,max:40,step:1,v:12,f:v=>"$"+v},
+  {h:"Cannibalization"},
+  {id:"cannOffer",label:"Offer buyers who watch an RV instead",min:0,max:60,step:5,v:20,f:v=>v+"%"},
+  {id:"cannIap",label:"Existing IAP lost to free rewards",min:0,max:30,step:1,v:5,f:v=>v+"%"},
+];
+const S={};
+function buildSim(){
+  const box=$("#simCtrls");
+  inputs.forEach(o=>{
+    if(o.h){const h=document.createElement("h4");h.textContent=o.h;box.appendChild(h);return}
+    S[o.id]=o.v;
+    const w=document.createElement("div");w.className="ctrl";
+    w.innerHTML=`<label for="in-${o.id}"><span>${o.label}</span><output id="out-${o.id}">${o.f(o.v)}</output></label><input type="range" id="in-${o.id}" min="${o.min}" max="${o.max}" step="${o.step}" value="${o.v}">`;
+    box.appendChild(w);
+    w.querySelector("input").addEventListener("input",e=>{S[o.id]=+e.target.value;$("#out-"+o.id).textContent=o.f(S[o.id]);runSim()});
+  });
+  runSim();
+}
+function runSim(){
+  const nonPayer=0.97;
+  const offer=S.dau*S.elig/100*S.cr/100*S.price*(1-S.cannOffer/100);
+  const rv=S.dau*nonPayer*S.reach/100*S.rvs*S.ecpm/1000;
+  const lost=S.dau*S.iap*S.cannIap/100;
+  const net=offer+rv-lost, base=S.dau*(S.iap+S.ad), pct=net/base*100;
+  const big=$("#simBig");big.textContent=(pct>=0?"+":"")+pct.toFixed(1)+"%";big.className="big "+(pct>=0?"pos":"neg");
+  $("#simSub").textContent=`${net>=0?"+":"−"}$${Math.abs(net).toLocaleString("en",{maximumFractionDigits:0})} per day · ≈ ${net>=0?"+":"−"}$${Math.abs(net*30).toLocaleString("en",{maximumFractionDigits:0})} per month`;
+  const breakEven=lost>0?(lost-offer)/(S.dau*nonPayer*S.rvs*S.ecpm/1000)*100:0;
+  $("#simRead").textContent= net>=0 ? `RV revenue and the offer outweigh the IAP lost. The idea stays positive until existing-IAP cannibalization reaches about ${Math.min(100,((offer+rv)/(S.dau*S.iap)*100)).toFixed(0)}%.` : `At these inputs cannibalization wins. Non-payer RV reach would need to be above ~${Math.max(0,breakEven).toFixed(0)}% to break even, so tighten targeting before shipping.`;
+  const svg=$("#chartSim");clear(svg);
+  const rows=[["Streak Saver",offer,"--s1"],["New RVs",rv,"--s3"],["IAP lost",-lost,"--bad"],["Net",net,net>=0?"--good":"--bad"]];
+  const W=420,H=200,m={l:96,r:70,t:8,b:8},iw=W-m.l-m.r,rh=(H-m.t-m.b)/rows.length;
+  const maxPos=Math.max(0,...rows.map(r=>r[1])),maxNeg=Math.max(0,...rows.map(r=>-r[1])),span=(maxPos+maxNeg)||1;
+  const zero=m.l+iw*maxNeg/span, scale=iw/span;
+  el("line",{x1:zero,x2:zero,y1:m.t,y2:H-m.b,stroke:css("--axis")},svg);
+  rows.forEach((r,i)=>{
+    const yy=m.t+i*rh+rh*0.22,h=rh*0.56,w=Math.abs(r[1])*scale;
+    const x=r[1]>=0?zero:zero-w;
+    el("rect",{x,y:yy,width:Math.max(w,1),height:h,rx:4,fill:css(r[2])},svg);
+    const t=el("text",{x:m.l-10,y:yy+h/2+4,"text-anchor":"end",class:"lbl"},svg);t.textContent=r[0];
+    const v=el("text",{x:r[1]>=0?zero+w+6:zero+6,y:yy+h/2+4},svg);v.textContent=(r[1]>=0?"+$":"−$")+Math.abs(r[1]).toLocaleString("en",{maximumFractionDigits:0});
+  });
+}
+
+/* ---------- Q2 crews demo ---------- */
+const mates=[["Ece","#ff7a45"],["Max","#8a5cf6"],["Lina","#22b8a0"],["Tom","#ffc21a"],["Aya","#ff4f9a"]];
+let lives=0,timers=[];
+function renderCrew(){$("#lives").textContent=lives;$("#livesHud").textContent=lives;$("#capNote").textContent=`Crew lives today: ${lives}/5`}
+function initCrew(){
+  $("#crew").innerHTML=mates.map(m=>`<div class="grow"><span class="av" style="background:${m[1]}"></span><span class="nm">${m[0]}</span><span class="st">waiting</span></div>`).join("");
+  renderCrew();
+}
+function ask(){
+  if(lives>=5||timers.length)return;
+  const btn=$("#askBtn");btn.textContent="SENT!";btn.disabled=true;$("#demoAsk").disabled=true;
+  const rows=[...document.querySelectorAll("#crew .grow")];
+  [2,0,4,1,3].forEach((mi,k,arr)=>{timers.push(setTimeout(()=>{
+    lives=Math.min(5,lives+1);renderCrew();
+    const r=rows[mi];r.classList.add("sent","pop");r.querySelector(".st").textContent="+1 ♥";
+    if(k===arr.length-1){btn.textContent="PLAY";timers=[]}
+  },500+k*550))});
+}
+function resetCrew(){timers.forEach(clearTimeout);timers=[];lives=0;const b=$("#askBtn");b.textContent="ASK CREW";b.disabled=false;$("#demoAsk").disabled=false;initCrew()}
+
+/* ---------- Q3 synthetic data ---------- */
+function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const R=rng(42),N=28,DAYS=Array.from({length:N},(_,i)=>i+1);
+const UA_DAY=15,REL_DAY=17;
+const tiers={US:{iap:.12,ad:.06,and:.40},T1:{iap:.07,ad:.04,and:.50},ROW:{iap:.015,ad:.012,and:.65}};
+const share=d=>{const k=d<UA_DAY?0:Math.min(1,(d-UA_DAY+1)/3);const us=.30-.051*k,t1=.20,row=1-us-t1;return{US:us,T1:t1,ROW:row}};
+const netB=d=>d<REL_DAY?1:0.45; // Network B eCPM multiplier on Android
+const NB_SHARE=.26; // Network B share of Android ad revenue before release
+const data=DAYS.map(d=>{
+  const sh=share(d),n=()=>1+(R()-.5)*.03;
+  const andAdMult=(1-NB_SHARE)+NB_SHARE*netB(d);
+  const row={d,dau:200000*(1+(R()-.5)*.02),seg:{}};
+  let iap=0,ad=0,adI=0,adA=0,shI=0,shA=0;
+  for(const k in tiers){const t=tiers[k],s=sh[k];
+    const ti=t.iap*n(),ta=t.ad*n();
+    const segIap=ti, segAdI=ta, segAdA=ta*andAdMult;
+    const segAd=segAdI*(1-t.and)+segAdA*t.and;
+    row.seg[k]={share:s,iap:segIap,ad:segAd,arpdau:segIap+segAd};
+    iap+=s*segIap;ad+=s*segAd;adI+=s*(1-t.and)*segAdI;adA+=s*t.and*segAdA;shI+=s*(1-t.and);shA+=s*t.and;
+  }
+  row.iap=iap;row.ad=ad;row.arpdau=iap+ad;row.adIos=adI/shI;row.adAnd=adA/shA;
+  row.ecpmA=9*(1+(R()-.5)*.04);row.ecpmB=11*netB(d)*(1+(R()-.5)*.04);
+  return row});
+const avg=(a,b,f)=>{let s=0;for(let i=a;i<b;i++)s+=f(data[i]);return s/(b-a)};
+const P1=[0,14],P2=[14,28];
+const A=f=>avg(P1[0],P1[1],f),B=f=>avg(P2[0],P2[1],f);
+const pc=(a,b)=>(b/a-1)*100;
+const tot={a:A(r=>r.arpdau),b:B(r=>r.arpdau)};
+const dauChg=pc(A(r=>r.dau),B(r=>r.dau));
+// mix vs rate decomposition
+let mix=0,rate=0;const segRows=[];
+for(const k in tiers){const sa=A(r=>r.seg[k].share),sb=B(r=>r.seg[k].share),aa=A(r=>r.seg[k].arpdau),ab=B(r=>r.seg[k].arpdau);
+  mix+=(sb-sa)*aa;rate+=sb*(ab-aa);segRows.push({k,sa,sb,aa,ab})}
+const mixPts=mix/tot.a*100,ratePts=rate/tot.a*100,totPct=pc(tot.a,tot.b);
+const fmtP=v=>(v>=0?"+":"−")+Math.abs(v).toFixed(1)+"%";
+const fmtPt=v=>(v>=0?"+":"−")+Math.abs(v).toFixed(1)+" pts";
+
+function lineChart(svg,series,opts){
+  clear(svg);const W=520,H=260,m={l:44,r:62,t:16,b:28},iw=W-m.l-m.r,ih=H-m.t-m.b;
+  const all=series.flatMap(s=>s.v);let lo=opts.lo??Math.min(...all),hi=opts.hi??Math.max(...all);const pad=(hi-lo)*.12||1;lo-=pad;hi+=pad;
+  const x=i=>m.l+i/(N-1)*iw,y=v=>m.t+ih-(v-lo)/(hi-lo)*ih;
+  const ticks=4;for(let k=0;k<=ticks;k++){const v=lo+(hi-lo)*k/ticks;el("line",{x1:m.l,x2:m.l+iw,y1:y(v),y2:y(v),stroke:css("--grid")},svg);const t=el("text",{x:m.l-6,y:y(v)+4,"text-anchor":"end"},svg);t.textContent=opts.fmt(v)}
+  [1,7,14,21,28].forEach(d=>{const t=el("text",{x:x(d-1),y:H-8,"text-anchor":"middle"},svg);t.textContent="Day "+d});
+  (opts.ann||[]).forEach(a=>{el("line",{x1:x(a.d-1),x2:x(a.d-1),y1:m.t,y2:m.t+ih,stroke:css("--muted"),"stroke-dasharray":"3 3"},svg);const t=el("text",{x:x(a.d-1)+4,y:m.t+10},svg);t.textContent=a.t});
+  el("line",{x1:m.l,x2:m.l+iw,y1:m.t+ih,y2:m.t+ih,stroke:css("--axis")},svg);
+  series.forEach(s=>{el("path",{d:s.v.map((v,i)=>(i?"L":"M")+x(i).toFixed(1)+","+y(v).toFixed(1)).join(""),fill:"none",stroke:css(s.c),"stroke-width":2,"stroke-linejoin":"round"},svg);
+    const lv=s.v[N-1];el("circle",{cx:x(N-1),cy:y(lv),r:4,fill:css(s.c),stroke:css("--surface"),"stroke-width":2},svg);
+    const t=el("text",{x:x(N-1)+8,y:y(lv)+4,class:"lbl"},svg);t.textContent=s.short||s.n});
+  const cross=el("line",{y1:m.t,y2:m.t+ih,stroke:css("--ink-2"),"stroke-width":1,opacity:0},svg);
+  const hit=el("rect",{x:m.l,y:m.t,width:iw,height:ih,fill:"transparent"},svg);
+  hit.addEventListener("mousemove",e=>{const b=svg.getBoundingClientRect();const px=(e.clientX-b.left)/b.width*W;const i=Math.max(0,Math.min(N-1,Math.round((px-m.l)/iw*(N-1))));
+    cross.setAttribute("x1",x(i));cross.setAttribute("x2",x(i));cross.setAttribute("opacity",.5);
+    showTip(`Day ${i+1}<br>`+series.map(s=>`${s.n}: ${opts.fmt(s.v[i])}`).join("<br>"),e.clientX,e.clientY)});
+  hit.addEventListener("mouseleave",()=>{cross.setAttribute("opacity",0);hideTip()});
+  $("#exLegend").innerHTML=series.length>1?series.map(s=>`<span><i style="background:var(${s.c})"></i>${s.n}</span>`).join(""):"";
+}
+function barChart(svg,rows,fmt){
+  clear(svg);$("#exLegend").innerHTML="";const W=520,H=260,m={l:150,r:70,t:20,b:20},iw=W-m.l-m.r,rh=(H-m.t-m.b)/rows.length;
+  const mx=Math.max(...rows.map(r=>Math.abs(r.v)));const zero=m.l+iw;const sc=iw/mx;
+  el("line",{x1:zero,x2:zero,y1:m.t,y2:H-m.b,stroke:css("--axis")},svg);
+  rows.forEach((r,i)=>{const yy=m.t+i*rh+rh*.25,h=rh*.5,w=Math.abs(r.v)*sc;
+    el("rect",{x:r.v<0?zero-w:zero,y:yy,width:Math.max(w,1),height:h,rx:4,fill:css(r.c)},svg);
+    const t=el("text",{x:m.l-10,y:yy+h/2+4,"text-anchor":"end",class:"lbl"},svg);t.textContent=r.n;
+    const v=el("text",{x:zero+6,y:yy+h/2+4,class:"lbl"},svg);v.textContent=fmt(r.v)});
+}
+const idx=(arr)=>{const b=arr.slice(0,14).reduce((a,c)=>a+c,0)/14;return arr.map(v=>v/b*100)};
+const usd=v=>"$"+v.toFixed(3);
+const steps=[
+  {n:"Is it real?",draw(){lineChart($("#chartEx"),[{n:"ARPDAU (index)",short:"ARPDAU",c:"--s1",v:idx(data.map(r=>r.arpdau))},{n:"DAU (index)",short:"DAU",c:"--s2",v:idx(data.map(r=>r.dau))}],{fmt:v=>v.toFixed(0)})},
+   find:()=>`<h3>Step 0 · Confirm the drop</h3><p>Last 14 days vs the 14 before: ARPDAU <strong>${fmtP(totPct)}</strong>, DAU <strong>${fmtP(dauChg)}</strong>.</p><ul class="clean"><li>Store and ad-network reports match the dashboard within 1%</li><li>No tracking changes; revenue in USD, refunds normal</li></ul><div class="so">The drop is real. Move on to where it comes from.</div>`},
+  {n:"IAP vs ads",draw(){lineChart($("#chartEx"),[{n:"IAP ARPDAU (index)",short:"IAP",c:"--s1",v:idx(data.map(r=>r.iap))},{n:"Ad ARPDAU (index)",short:"Ads",c:"--s3",v:idx(data.map(r=>r.ad))}],{fmt:v=>v.toFixed(0),ann:[{d:UA_DAY,t:"UA change"}]})},
+   find:()=>`<h3>Step 1 · Split by source</h3><p>IAP ARPDAU <strong>${fmtP(pc(A(r=>r.iap),B(r=>r.iap)))}</strong>, ad ARPDAU <strong>${fmtP(pc(A(r=>r.ad),B(r=>r.ad)))}</strong>. Both fell on the same day.</p><div class="so">One broken placement or offer can't move IAP and ads together. That points to <strong>who is playing</strong>, so check the user mix next.</div>`},
+  {n:"Country mix",draw(){barChart($("#chartEx"),[{n:"Mix effect",v:mixPts,c:"--s2"},{n:"Rate effect",v:ratePts,c:"--s1"},{n:"Total change",v:totPct,c:"--bad"}],fmtPt)},
+   find:()=>`<h3>Step 2 · Mix vs rate by country</h3><div class="tbl"><table><tr><th>Tier</th><th class="num">DAU share</th><th class="num">ARPDAU</th></tr>${segRows.map(s=>`<tr><td>${s.k==="T1"?"Other tier-1":s.k}</td><td class="num">${(s.sa*100).toFixed(0)}% → ${(s.sb*100).toFixed(0)}%</td><td class="num">${fmtP(pc(s.aa,s.ab))}</td></tr>`).join("")}</table></div><p><strong>${Math.round(mixPts/totPct*100)}%</strong> of the drop is mix: the US share fell from ${(segRows[0].sa*100).toFixed(0)}% to ${(segRows[0].sb*100).toFixed(0)}% from day ${UA_DAY}, when UA moved budget to cheaper geos. Each country's own ARPDAU barely moved.</p><div class="so">Mostly not a monetization problem: talk to UA about ROAS by geo. But a rate effect of ${fmtPt(ratePts)} remains. Find it.</div>`},
+  {n:"Platform",draw(){lineChart($("#chartEx"),[{n:"iOS ad ARPDAU",short:"iOS",c:"--s1",v:data.map(r=>r.adIos)},{n:"Android ad ARPDAU",short:"Android",c:"--s2",v:data.map(r=>r.adAnd)}],{fmt:usd,ann:[{d:REL_DAY,t:"v2.14"}]})},
+   find:()=>`<h3>Step 3 · Platform and version</h3><p>Within each country, iOS ad revenue is flat. Android ad ARPDAU steps down <strong>${fmtP(pc(A(r=>r.adAnd),avg(REL_DAY,28,r=>r.adAnd)))}</strong> from day ${REL_DAY}, the day Android v2.14 shipped.</p><div class="so">A release-dated drop on one platform: look at the ad networks in that build.</div>`},
+  {n:"Ad network",draw(){lineChart($("#chartEx"),[{n:"Network A eCPM",short:"Net A",c:"--s1",v:data.map(r=>r.ecpmA)},{n:"Network B eCPM",short:"Net B",c:"--s2",v:data.map(r=>r.ecpmB)}],{fmt:v=>"$"+v.toFixed(1),lo:0,ann:[{d:REL_DAY,t:"v2.14"}]})},
+   find:()=>`<h3>Step 4 · Network level (Android)</h3><p>Network A is stable. Network B's eCPM fell <strong>${fmtP(pc(A(r=>r.ecpmB),avg(REL_DAY,28,r=>r.ecpmB)))}</strong> from day ${REL_DAY}: its adapter in v2.14 loses most of its bids.</p><div class="so">Root cause #2 found. Hotfix or roll back the adapter; escalate with the partner; alert on per-network eCPM.</div>`},
+  {n:"Conclusion",draw(){barChart($("#chartEx"),[{n:"UA geo mix shift",v:mixPts,c:"--s2"},{n:"Android Network B",v:ratePts,c:"--s1"},{n:"ARPDAU change",v:totPct,c:"--bad"}],fmtPt)},
+   find:()=>`<h3>Two causes, two owners</h3><ul class="clean"><li><strong>${fmtPt(mixPts)}</strong> · user mix: UA shifted budget to lower-value geos. Owner: UA, with ROAS by geo.</li><li><strong>${fmtPt(ratePts)}</strong> · Network B adapter broken in Android v2.14. Owner: ad monetization and engineering.</li></ul><div class="so">Then add alerts on ARPDAU by source, geo, platform and network so this is caught in a day.</div>`},
+];
+let cur=0;
+function buildSteps(){
+  $("#steps").innerHTML=steps.map((s,i)=>`<button role="tab" id="st${i}" aria-selected="${i===0}"><span>${i}</span>${s.n}</button>`).join("");
+  steps.forEach((s,i)=>$("#st"+i).addEventListener("click",()=>go(i)));
+  go(0);
+}
+function go(i){cur=i;document.querySelectorAll("#steps button").forEach((b,k)=>{b.classList.toggle("on",k===i);b.setAttribute("aria-selected",k===i)});steps[i].draw();$("#exFind").innerHTML=steps[i].find()}
+
+function drawAll(){drawStore();runSim();steps[cur].draw()}
+drawStore();buildSim();initCrew();buildSteps();
+$("#askBtn").addEventListener("click",ask);$("#demoAsk").addEventListener("click",ask);$("#demoReset").addEventListener("click",resetCrew);
+const mq=window.matchMedia("(prefers-color-scheme: dark)");mq.addEventListener&&mq.addEventListener("change",drawAll);
+new MutationObserver(drawAll).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
+})();
+</script>
+
+</body>
+</html>
