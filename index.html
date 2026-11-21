@@ -156,6 +156,19 @@ footer{color:var(--muted);font-size:12.5px;border-top:1px solid var(--line);padd
   .matrix{font-size:12px}
 }
 
+
+/* ---- page background: sky glow + faint hole pattern from the game ---- */
+:root{--glow-a:#bfe3ff;--glow-b:#ffe7b0;--ring:rgba(31,95,209,.07)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--glow-a:#123566;--glow-b:#3b2c0c;--ring:rgba(140,180,255,.06)}}
+:root[data-theme="dark"]{--glow-a:#123566;--glow-b:#3b2c0c;--ring:rgba(140,180,255,.06)}
+body{background:
+  radial-gradient(1100px 620px at 88% -8%, var(--glow-a), transparent 62%),
+  radial-gradient(800px 520px at -12% 38%, var(--glow-b), transparent 60%),
+  radial-gradient(900px 600px at 105% 92%, var(--glow-a), transparent 60%),
+  var(--bg);background-attachment:fixed}
+.bgpat{position:fixed;inset:0;z-index:0;pointer-events:none;background:var(--ring);
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cg fill='none' stroke='%23000' stroke-width='6'%3E%3Cellipse cx='45' cy='50' rx='24' ry='10'/%3E%3Cellipse cx='135' cy='140' rx='24' ry='10'/%3E%3C/g%3E%3C/svg%3E") 0 0/180px 180px repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cg fill='none' stroke='%23000' stroke-width='6'%3E%3Cellipse cx='45' cy='50' rx='24' ry='10'/%3E%3Cellipse cx='135' cy='140' rx='24' ry='10'/%3E%3C/g%3E%3C/svg%3E") 0 0/180px 180px repeat}
+.wrap{position:relative;z-index:1}
 /* ---- game-UI mockups (fixed game look, intentionally not themed) ---- */
 .mockrow{grid-template-columns:290px minmax(0,1fr)}
 .gphone{width:100%;max-width:290px;aspect-ratio:9/18.5;background:#0b1226;border-radius:38px;padding:9px;box-shadow:0 14px 34px rgba(10,20,50,.22)}
@@ -213,6 +226,7 @@ html{scroll-behavior:smooth}
 <body>
 
 
+<div class="bgpat" aria-hidden="true"></div>
 <div class="wrap">
 <nav class="rail" aria-label="Sections">
   <div class="brand">Hole People<br>Monetization Case</div>
