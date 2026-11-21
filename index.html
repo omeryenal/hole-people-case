@@ -242,7 +242,7 @@ html{scroll-behavior:smooth}
       <h3>The store hides its own discount</h3>
       <p class="note" style="margin-top:4px">Price per 1,000 coins, TRY, by coin pack</p>
       <svg class="chart" id="chartStore" viewBox="0 0 420 230" role="img" aria-label="Bar chart of price per 1,000 coins by pack"></svg>
-      <p style="font-size:14px">Bigger packs are up to 50% cheaper per coin, but no pack says so. Two upgrades (5k→10k, 25k→50k) give no discount at all.</p>
+      <p style="font-size:14px">Bigger packs get you coins at up to half the price, but nothing in the store tells you that. And going from 5k to 10k, or from 25k to 50k, doesn't get any cheaper at all.</p>
     </div>
     <div class="card" style="display:flex;flex-direction:column;gap:10px">
       <h3>What the game already has</h3>
@@ -262,8 +262,8 @@ html{scroll-behavior:smooth}
   </div>
 
   <div class="insight">
-    <div class="eyebrow">Key insight</div>
-    <p>The strongest emotional moment in the game is failing while a streak or Daily Pack progress is at stake. The game's only answer is "pay 900 coins". Most non-payers hold 300–900 coins, so for them that moment ends the session.</p>
+    <div class="eyebrow">Where I'd focus</div>
+    <p>The moment that matters most is losing a level while a streak or a Daily Pack is on the line. Right now the game only offers "pay 900 coins" there, and most non-payers have somewhere between 300 and 900. So they just close the app.</p>
   </div>
 </section>
 
@@ -303,20 +303,16 @@ html{scroll-behavior:smooth}
         <tr><th>When / where</th><td>Fail screen, in place of the coin button the player can't afford</td></tr>
         <tr><th>Frequency</th><td>Max 1 per day, 3 per week; hidden for 7 days after any purchase</td></tr>
       </table></div>
-      <ul class="clean">
-        <li><strong>Right moment:</strong> loss aversion peaks at the fail screen. Pay-to-continue and life refills are how top puzzle games make most of their IAP revenue.</li>
-        <li><strong>Right player:</strong> it turns non-payers into first-time payers, the biggest lever on long-term IAP. Players who pay once are far more likely to pay again.</li>
-        <li><strong>Teaches value:</strong> UFO and unlimited lives are samples of what the bigger bundles contain.</li>
-        <li><strong>Cheap to build:</strong> a new trigger on existing systems, no new content.</li>
-      </ul>
-      <p class="note">Quick wins alongside: "+25% / Best value" labels on coin packs, fix the flat tiers, sell single boosters priced by power (UFO &gt; Rainbow &gt; +1 Slot).</p>
+      <p>The fail screen is where puzzle games make most of their money, because that's when players care the most. I'm also aiming it at people who have never paid: the first purchase is the hardest one to get, and after that people are much more likely to buy again.</p>
+      <p>The UFO is in there on purpose. It's the strongest booster and I suspect many players never try it. Once they do, the bigger bundles make more sense. The offer only reuses things the game already has, so it should be cheap to build.</p>
+      <p class="note">Alongside it I'd label the coin pack discounts, fix the two tiers that don't get cheaper, and sell boosters one by one, priced by how strong they are. Right now the UFO costs the same as the Rainbow, even though it's clearly better.</p>
     </div>
   </div>
 
   <div class="subhead"><span class="tag">1b</span><h3>Three new rewarded video placements</h3></div>
   <div class="grid3">
     <div class="card"><span class="pill">Fail screen</span><h3 style="margin-top:8px">RV Continue</h3><p style="font-size:14px">Non-payers with &lt; 900 coins, shown <strong>after</strong> Streak Saver is declined. Gives +1 slot (weaker than the paid continue). 1 per level, 3 per day.</p></div>
-    <div class="card"><span class="pill">Store</span><h3 style="margin-top:8px">Daily Free Gift</h3><p style="font-size:14px">Everyone. Coins (e.g. 100) or a random booster, 3 per day. Answers the top store-review complaint: no way to earn coins except winning.</p></div>
+    <div class="card"><span class="pill">Store</span><h3 style="margin-top:8px">Daily Free Gift</h3><p style="font-size:14px">Anyone can watch for 100 coins or a random booster, 3 times a day. The complaint I saw most in reviews is that winning is the only way to earn coins.</p></div>
     <div class="card"><span class="pill">Before Hard levels</span><h3 style="margin-top:8px">Free booster</h3><p style="font-size:14px">Players with 0 of a booster when a Hard level starts. 1 free +1 Slot per Hard level.</p></div>
   </div>
   <div class="tbl"><table>
@@ -339,7 +335,7 @@ html{scroll-behavior:smooth}
     </div>
   </div>
 
-  <div class="subhead"><span class="tag">1c</span><h3>Measuring it: a 2×2 test, because the two changes interact</h3></div>
+  <div class="subhead"><span class="tag">1c</span><h3>Measuring it: testing both changes together</h3></div>
   <div class="grid2">
     <div style="display:flex;flex-direction:column;gap:10px">
       <div class="matrix">
@@ -351,13 +347,13 @@ html{scroll-behavior:smooth}
     </div>
     <div class="tbl"><table>
       <tr><th>Type</th><th>Metrics</th></tr>
-      <tr><td><strong>North star</strong></td><td>Cumulative ARPU (IAP + ads) at D7 / D14 / D30 per cohort</td></tr>
+      <tr><td><strong>Main metric</strong></td><td>Cumulative ARPU (IAP + ads) at D7 / D14 / D30 per cohort</td></tr>
       <tr><td>IAP</td><td>Payer conversion, first-purchase rate, offer CR, ARPPU, repeat purchase in 14 days, coin-pack revenue (cannibalization)</td></tr>
       <tr><td>Ads</td><td>RV impressions/DAU, RV engagement per placement, ad ARPDAU, eCPM</td></tr>
       <tr><td>Guardrails</td><td>D1/D7/D30 retention, sessions/day, churn per level (lvl 30), store rating</td></tr>
     </table></div>
   </div>
-  <p><strong>Decision rule:</strong> ship the winning arm if D14 cumulative ARPU is significantly higher and D7 retention drops less than ~1% relative. Revenue per user is heavy-tailed, so I'd winsorize the top 1% of spenders (or use CUPED / bootstrap) and size the test for a 3–5% minimum detectable effect. Roll out 10% → 50% → 100% to catch novelty effects.</p>
+  <p>If day-14 ARPU is clearly up and D7 retention hasn't dropped by more than about 1%, I'd roll out the winner step by step: 10%, then 50%, then everyone. A few big spenders can swing revenue tests a lot, so I'd cap the top 1% (or bootstrap) and size the test to catch a 3–5% change. If the videos help retention but hurt IAP too much, I'd make them harder to reach and test again.</p>
 </section>
 
 <!-- ============ Q2 ============ -->
@@ -378,12 +374,8 @@ html{scroll-behavior:smooth}
     </div>
     <div class="card" style="display:flex;flex-direction:column;gap:8px">
       <h3>Why it works</h3>
-      <ul class="clean" style="font-size:14px">
-        <li><strong>Reciprocity:</strong> "they sent me a life, I'll send one back" brings players back daily</li>
-        <li><strong>Softens the churn moment:</strong> running out of lives becomes a social action instead of a quit</li>
-        <li><strong>LiveOps platform:</strong> team races, chests and gift offers become possible</li>
-        <li><strong>Revenue through lifetime:</strong> more retained days means more fail moments and offers</li>
-      </ul>
+      <p style="font-size:14px">People don't like letting others down. If someone sends you a life, you want to send one back, so you come back the next day. Quitting a game is easy; quitting a team is harder.</p>
+      <p style="font-size:14px">It also turns running out of lives into something you do with others instead of a reason to close the app. Most of the money comes indirectly: players who stay longer hit more fail moments and see more offers.</p>
     </div>
   </div>
 
@@ -448,7 +440,7 @@ html{scroll-behavior:smooth}
 IAP ARPDAU = payer conversion × ARPPU
 Ad ARPDAU  = Σ formats ( impressions per DAU × eCPM / 1000 )
              impressions per DAU = sessions/DAU × ad opportunities/session × show rate</div>
-  <p>Every hypothesis maps to one term of this tree, so each check has a number that confirms or kills it. <strong>Flat DAU does not mean the same players</strong>: a shift in who plays can move ARPDAU while every segment is healthy.</p>
+  <p>Since DAU didn't move, the question is which part of revenue did. Splitting ARPDAU like this means every idea can be checked against a real number. One thing to keep in mind: <strong>flat DAU doesn't mean the same players</strong>. If the mix of players changes, ARPDAU can fall even when every country is doing fine.</p>
 
   <div class="card" style="display:flex;flex-direction:column;gap:16px">
     <div><h3>Walkthrough on a simulated title</h3><p class="note">Synthetic data with two planted causes, to show the order of the investigation. Click through the steps.</p></div>
@@ -516,7 +508,7 @@ Ad ARPDAU  = Σ formats ( impressions per DAU × eCPM / 1000 )
       </table></div>
     </div>
   </div>
-  <p><strong>Afterwards:</strong> automated anomaly alerts on ARPDAU by source, geo, platform and network, so the next drop is caught in a day, not two weeks.</p>
+  <p>Once it's fixed, I'd set up automatic alerts on ARPDAU by source, country, platform and network, so the next drop gets caught in a day instead of two weeks.</p>
 </section>
 
 <!-- ============ EXTRA ============ -->
@@ -526,11 +518,11 @@ Ad ARPDAU  = Σ formats ( impressions per DAU × eCPM / 1000 )
   <div class="grid2">
     <div class="card" style="display:flex;flex-direction:column;gap:8px">
       <h3>Problem</h3>
-      <p style="font-size:14px">Tapping a blocked group has no cost: it only shakes. Players can try every option until one works. Fewer fails means less demand for continues, boosters and lives, the moments where puzzle games earn.</p>
+      <p style="font-size:14px">Tapping a group that can't move costs nothing, it just shakes. So you can try everything until something works, and the game gets pretty easy. That matters for revenue: fewer losses means fewer moments where players want continues, boosters or lives.</p>
     </div>
     <div class="card" style="display:flex;flex-direction:column;gap:8px">
       <h3>Idea, to test separately</h3>
-      <p style="font-size:14px">On <strong>Hard levels only</strong>, give 3–5 mistakes. When they run out: +1 via RV, or +3 for coins (a new coin sink). Optional "Hard mode" with bigger rewards. Casual players dislike penalties, so retention is the main guardrail.</p>
+      <p style="font-size:14px">On <strong>hard levels only</strong>, players could get 3–5 mistakes. When they run out, one more for a video or three more for coins, which also gives coins another use. An optional hard mode with bigger rewards could work too. Casual players don't like being punished, so I'd test it on its own and watch retention closely.</p>
     </div>
   </div>
   <footer>Charts in Q1 and Q3 use illustrative inputs and synthetic data.</footer>
