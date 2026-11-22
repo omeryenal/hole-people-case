@@ -157,18 +157,35 @@ footer{color:var(--muted);font-size:12.5px;border-top:1px solid var(--line);padd
 }
 
 
-/* ---- page background: sky glow + faint hole pattern from the game ---- */
-:root{--glow-a:#bfe3ff;--glow-b:#ffe7b0;--ring:rgba(31,95,209,.07)}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--glow-a:#123566;--glow-b:#3b2c0c;--ring:rgba(140,180,255,.06)}}
-:root[data-theme="dark"]{--glow-a:#123566;--glow-b:#3b2c0c;--ring:rgba(140,180,255,.06)}
-body{background:
-  radial-gradient(1100px 620px at 88% -8%, var(--glow-a), transparent 62%),
-  radial-gradient(800px 520px at -12% 38%, var(--glow-b), transparent 60%),
-  radial-gradient(900px 600px at 105% 92%, var(--glow-a), transparent 60%),
-  var(--bg);background-attachment:fixed}
-.bgpat{position:fixed;inset:0;z-index:0;pointer-events:none;background:var(--ring);
-  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cg fill='none' stroke='%23000' stroke-width='6'%3E%3Cellipse cx='45' cy='50' rx='24' ry='10'/%3E%3Cellipse cx='135' cy='140' rx='24' ry='10'/%3E%3C/g%3E%3C/svg%3E") 0 0/180px 180px repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cg fill='none' stroke='%23000' stroke-width='6'%3E%3Cellipse cx='45' cy='50' rx='24' ry='10'/%3E%3Cellipse cx='135' cy='140' rx='24' ry='10'/%3E%3C/g%3E%3C/svg%3E") 0 0/180px 180px repeat}
-.wrap{position:relative;z-index:1}
+
+
+/* ---- design pass: no caps/mono labels, fewer cards, game-first hero ---- */
+.hero{display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:40px;align-items:center}
+.hero-text{display:flex;flex-direction:column;gap:16px;min-width:0}
+.byline{color:var(--muted);font-size:14px;margin:0}
+.hero-phone{max-width:270px;justify-self:end}
+.qn{display:block;font:600 15px/1.4 var(--f-body);letter-spacing:0;color:var(--accent);margin-bottom:6px}
+.plain{border-top:1px solid var(--line);padding-top:16px;min-width:0}
+.insight{background:transparent;border-left:4px solid var(--coin);border-radius:0;padding:4px 0 4px 18px}
+.insight h3{font-size:17px}
+th{font:600 12.5px var(--f-body);letter-spacing:0;text-transform:none;color:var(--ink-2)}
+td.num,th.num{font-family:var(--f-body);font-size:14px}
+.pill{font:600 11.5px var(--f-body)}
+.matrix .h{font:600 12px var(--f-body);text-transform:none;letter-spacing:0}
+.phase small{font:600 12px var(--f-body);text-transform:none;letter-spacing:0}
+.ctrls h4{font:600 13px var(--f-body);text-transform:none;letter-spacing:0;color:var(--ink)}
+.ctrl output{font-family:var(--f-body)}
+.subhead .tag{font:600 15px var(--f-body)}
+nav.rail a span{font:600 12px var(--f-body);min-width:18px}
+.steps button span{font-family:var(--f-body)}
+.chart text{font-family:var(--f-body);font-variant-numeric:tabular-nums}
+#tip{font-family:var(--f-body)}
+@media (max-width:900px){.hero{grid-template-columns:minmax(0,1fr)}.hero-phone{justify-self:center}}
+
+/* ---- question / answer layout ---- */
+.ask{background:var(--surface-2);border-left:3px solid var(--accent);border-radius:0 10px 10px 0;padding:12px 16px;font-size:15px;line-height:1.55;color:var(--ink);max-width:78ch}
+.ask b{color:var(--accent);margin-right:2px}
+.ans{font-size:19px;margin-top:-6px}
 /* ---- game-UI mockups (fixed game look, intentionally not themed) ---- */
 .mockrow{grid-template-columns:290px minmax(0,1fr)}
 .gphone{width:100%;max-width:290px;aspect-ratio:9/18.5;background:#0b1226;border-radius:38px;padding:9px;box-shadow:0 14px 34px rgba(10,20,50,.22)}
@@ -226,39 +243,52 @@ html{scroll-behavior:smooth}
 <body>
 
 
-<div class="bgpat" aria-hidden="true"></div>
 <div class="wrap">
 <nav class="rail" aria-label="Sections">
   <div class="brand">Hole People<br>Monetization Case</div>
-  <a href="#intro"><span>00</span>Playtest findings</a>
+  <a href="#intro"><span></span>Playtest findings</a>
   <a href="#q1"><span>Q1</span>New offer &amp; RVs</a>
   <a href="#q2"><span>Q2</span>Crews</a>
   <a href="#q3"><span>Q3</span>ARPDAU drop</a>
-  <a href="#extra"><span>+</span>Core-loop note</a>
+  <a href="#extra"><span></span>Core-loop note</a>
   <div class="hint">Step through with <kbd>←</kbd> <kbd>→</kbd></div>
 </nav>
 
 <main>
 <!-- ============ INTRO ============ -->
 <section id="intro">
-  <div class="eyebrow">Monetization Specialist case · Ömer Yenal · November 2026</div>
-  <h1>Hole People: where the money is left on the table</h1>
-
-  <div class="stats">
-    <div class="stat"><b>40</b><small>coins earned per win (×2 with a rewarded video)</small></div>
-    <div class="stat"><b>900</b><small>coins to continue a failed level, about 22 wins of income</small></div>
-    <div class="stat"><b>30 min</b><small>per life; 5 lives take 2.5 hours to refill</small></div>
-    <div class="stat"><b>0</b><small>interstitials seen in early levels; RV only at level end and at 0 lives</small></div>
+  <div class="hero">
+    <div class="hero-text">
+      <h1>Hole People: where the money is left on the table</h1>
+      <p class="byline">Monetization Specialist case by Ömer Yenal, November 2026</p>
+      <p class="lede">A win pays about 40 coins. Continuing a failed level costs 900, which is around 22 wins. Lives come back one every 30 minutes, ads barely appear, and the fail screen has nothing for a player who can't pay.</p>
+      <p class="lede">This is the screen a non-paying player sees when their streak breaks. Almost everything below is about changing it.</p>
+    </div>
+    <div class="gphone hero-phone" aria-label="Today's fail screen for a player with 330 coins">
+      <div class="gscreen"><div class="board"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="dim"></div>
+        <div class="ghud"><div class="gpill"><svg viewBox="0 0 32 30"><path d="M16 28S3 20.5 3 11.2A7 7 0 0 1 16 7a7 7 0 0 1 13 4.2C29 20.5 16 28 16 28z" fill="#ff3352" stroke="#9e0b22" stroke-width="2.2"/><path d="M9 9.5c1.5-2 4-2 5 .5" stroke="#ff9aa9" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg><span class="gs thin">2</span></div><div class="gpill coin"><span class="gs thin">330</span><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" fill="#ffc21a" stroke="#d98a00" stroke-width="2.4"/><circle cx="16" cy="16" r="9.5" fill="#ffd54d"/><ellipse cx="16" cy="16.5" rx="8" ry="3" fill="none" stroke="#e39200" stroke-width="2" transform="rotate(-15 16 16)"/><circle cx="16" cy="15" r="3.6" fill="#e39200"/></svg></div></div>
+        <div class="gpop">
+          <div class="gbanner gs">OUT OF SPACE!</div>
+          <div class="gframe"><div class="gbody">
+            <div class="gsub gs thin">Continue playing?</div>
+            <div class="gprog"><div class="r"><span>Your 5-win streak will be lost</span><span>🔥</span></div></div>
+            <button class="gbtn gs" tabindex="-1" style="font-size:20px;display:flex;align-items:center;justify-content:center;gap:6px">Continue <span style="width:26px;height:26px;display:inline-flex"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" fill="#ffc21a" stroke="#d98a00" stroke-width="2.4"/><circle cx="16" cy="16" r="9.5" fill="#ffd54d"/><ellipse cx="16" cy="16.5" rx="8" ry="3" fill="none" stroke="#e39200" stroke-width="2" transform="rotate(-15 16 16)"/><circle cx="16" cy="15" r="3.6" fill="#e39200"/></svg></span> 900</button>
+            <div class="gfoot gs thin">You have 330 coins</div>
+            <button class="gskip" tabindex="-1">Give up (−1 life)</button>
+          </div></div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="grid2">
-    <div class="card">
+    <div class="plain">
       <h3>The store hides its own discount</h3>
       <p class="note" style="margin-top:4px">Price per 1,000 coins, TRY, by coin pack</p>
       <svg class="chart" id="chartStore" viewBox="0 0 420 230" role="img" aria-label="Bar chart of price per 1,000 coins by pack"></svg>
       <p style="font-size:14px">Bigger packs get you coins at up to half the price, but nothing in the store tells you that. And going from 5k to 10k, or from 25k to 50k, doesn't get any cheaper at all.</p>
     </div>
-    <div class="card" style="display:flex;flex-direction:column;gap:10px">
+    <div class="plain" style="display:flex;flex-direction:column;gap:10px">
       <h3>What the game already has</h3>
       <ul class="clean">
         <li><strong>Star Quest</strong> (lvl 30): a timed star bar. Wins earn stars, win streaks earn more, and milestones pay unlimited lives, boosters and coins (e.g. 350 stars → 150 coins)</li>
@@ -276,18 +306,18 @@ html{scroll-behavior:smooth}
   </div>
 
   <div class="insight">
-    <div class="eyebrow">Where I'd focus</div>
+    <h3>Where I'd focus</h3>
     <p>The moment that matters most is losing a level while a streak or a Daily Pack is on the line. Right now the game only offers "pay 900 coins" there, and most non-payers have somewhere between 300 and 900. So they just close the app.</p>
   </div>
 </section>
 
 <!-- ============ Q1 ============ -->
 <section id="q1">
-  <div class="eyebrow">Question 1</div>
-  <h2>Turn the fail moment into a first purchase, and give non-payers a way forward</h2>
-  <div class="qtext">Goal: increase the title's overall revenue. (a) a new IAP offer, (b) new rewarded video placements, (c) how to measure and test.</div>
+  <h2><span class="qn">Question 1</span>Turn the fail moment into a first purchase, and give non-payers a way forward</h2>
+  <div class="qtext">Imagine you own the monetization strategy for Hole People, our hybrid-casual puzzle game. Its revenue comes from both in-app purchases (IAP) and ads. Our goal is to increase the title's overall revenue.</div>
 
-  <div class="subhead"><span class="tag">1a</span><h3>New IAP offer: Streak Saver</h3></div>
+  <div class="ask"><b>a)</b> If you could add <strong>a new IAP offer</strong>, what would it be? Describe what's in it, its price point, which players it targets, and when and where in the game it would appear.</div>
+  <h3 class="ans">My answer: Streak Saver</h3>
   <div class="mockrow">
     <div class="gphone" aria-label="Mockup of the Streak Saver offer on the fail screen, in the game's style">
       <div class="gscreen"><div class="board"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="dim"></div>
@@ -323,11 +353,12 @@ html{scroll-behavior:smooth}
     </div>
   </div>
 
-  <div class="subhead"><span class="tag">1b</span><h3>Three new rewarded video placements</h3></div>
+  <div class="ask"><b>b)</b> Would you add any <strong>new rewarded video (RV) placements</strong>? If yes, where would they go and who should be seeing them? How would they affect the game overall, including player experience, retention and IAP revenue?</div>
+  <h3 class="ans">My answer: yes, three of them</h3>
   <div class="grid3">
-    <div class="card"><span class="pill">Fail screen</span><h3 style="margin-top:8px">RV Continue</h3><p style="font-size:14px">Non-payers with &lt; 900 coins, shown <strong>after</strong> Streak Saver is declined. Gives +1 slot (weaker than the paid continue). 1 per level, 3 per day.</p></div>
-    <div class="card"><span class="pill">Store</span><h3 style="margin-top:8px">Daily Free Gift</h3><p style="font-size:14px">Anyone can watch for 100 coins or a random booster, 3 times a day. The complaint I saw most in reviews is that winning is the only way to earn coins.</p></div>
-    <div class="card"><span class="pill">Before Hard levels</span><h3 style="margin-top:8px">Free booster</h3><p style="font-size:14px">Players with 0 of a booster when a Hard level starts. 1 free +1 Slot per Hard level.</p></div>
+    <div class="plain"><span class="pill">Fail screen</span><h3 style="margin-top:8px">RV Continue</h3><p style="font-size:14px">Non-payers with &lt; 900 coins, shown <strong>after</strong> Streak Saver is declined. Gives +1 slot (weaker than the paid continue). 1 per level, 3 per day.</p></div>
+    <div class="plain"><span class="pill">Store</span><h3 style="margin-top:8px">Daily Free Gift</h3><p style="font-size:14px">Anyone can watch for 100 coins or a random booster, 3 times a day. The complaint I saw most in reviews is that winning is the only way to earn coins.</p></div>
+    <div class="plain"><span class="pill">Before Hard levels</span><h3 style="margin-top:8px">Free booster</h3><p style="font-size:14px">Players with 0 of a booster when a Hard level starts. 1 free +1 Slot per Hard level.</p></div>
   </div>
   <div class="tbl"><table>
     <tr><th>Area</th><th>Expected effect</th></tr>
@@ -337,19 +368,8 @@ html{scroll-behavior:smooth}
     <tr><td>IAP revenue</td><td><span class="pill bad">risk</span> Cannibalization: some buyers watch instead. Mitigated by a weaker reward than paid, daily caps, paid offer shown first, payers excluded. The test decides.</td></tr>
   </table></div>
 
-  <div class="card" style="display:flex;flex-direction:column;gap:16px">
-    <div><h3>What could this be worth?</h3><p class="note">Illustrative model with assumed inputs, not Rollic data. Move the sliders to stress-test the idea.</p></div>
-    <div class="sim">
-      <div class="ctrls" id="simCtrls"></div>
-      <div class="result">
-        <div><div class="note">Net change in ARPDAU</div><div class="big" id="simBig">+0%</div><div class="note" id="simSub"></div></div>
-        <svg class="chart" id="chartSim" viewBox="0 0 420 200" role="img" aria-label="Revenue bridge of the change"></svg>
-        <p class="note" id="simRead"></p>
-      </div>
-    </div>
-  </div>
-
-  <div class="subhead"><span class="tag">1c</span><h3>Measuring it: testing both changes together</h3></div>
+  <div class="ask"><b>c)</b> How would you <strong>measure</strong> whether your changes worked? Name the key metrics and explain how you would test the changes.</div>
+  <h3 class="ans">My answer: test both changes together</h3>
   <div class="grid2">
     <div style="display:flex;flex-direction:column;gap:10px">
       <div class="matrix">
@@ -372,12 +392,13 @@ html{scroll-behavior:smooth}
 
 <!-- ============ Q2 ============ -->
 <section id="q2">
-  <div class="eyebrow">Question 2</div>
-  <h2>Borrow Royal Match's Teams, as lightweight "Crews"</h2>
-  <div class="qtext">Pick a top-grossing puzzle game, name a monetization feature Hole People doesn't have: how it works, why pick it, how to adapt it, the risks, and how to validate it.</div>
+  <h2><span class="qn">Question 2</span>Borrow Royal Match's Teams, as lightweight "Crews"</h2>
+  <div class="qtext">Pick a top-grossing mobile puzzle game (not a Rollic title). Name a monetization feature it has that Hole People doesn't.</div>
 
+  <div class="ask"><b>a)</b> Explain how it works and why it's effective.</div>
+  <h3 class="ans">My answer: Teams in Royal Match</h3>
   <div class="grid2">
-    <div class="card" style="display:flex;flex-direction:column;gap:8px">
+    <div class="plain" style="display:flex;flex-direction:column;gap:8px">
       <h3>Why Teams</h3>
       <p style="font-size:14px">Royal Match was 2025's highest-grossing puzzle game (~$1.4B IAP). Hole People already has a streak (Star Quest) and an album (Collection). The one big system missing is <strong>social</strong>.</p>
       <ul class="clean" style="font-size:14px">
@@ -386,13 +407,15 @@ html{scroll-behavior:smooth}
         <li>Weekly team battles on a shared score; team gifts make purchases social</li>
       </ul>
     </div>
-    <div class="card" style="display:flex;flex-direction:column;gap:8px">
+    <div class="plain" style="display:flex;flex-direction:column;gap:8px">
       <h3>Why it works</h3>
       <p style="font-size:14px">People don't like letting others down. If someone sends you a life, you want to send one back, so you come back the next day. Quitting a game is easy; quitting a team is harder.</p>
       <p style="font-size:14px">It also turns running out of lives into something you do with others instead of a reason to close the app. Most of the money comes indirectly: players who stay longer hit more fail moments and see more offers.</p>
     </div>
   </div>
 
+  <div class="ask"><b>b)</b> Explain why you picked it, how you'd adapt it, and what risks you see.</div>
+  <h3 class="ans">My answer: "Crews", built in three steps</h3>
   <div class="mockrow">
     <div class="gphone" aria-label="Interactive mockup of asking a crew for lives, in the game's style">
       <div class="gscreen"><div class="board"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="dim"></div>
@@ -429,7 +452,8 @@ html{scroll-behavior:smooth}
     <tr><td><strong>Build and moderation cost</strong></td><td>Phased rollout, no free chat in the MVP</td></tr>
   </table></div>
 
-  <h3>Validating before a full rollout</h3>
+  <div class="ask"><b>c)</b> How would you validate it before a full rollout? Include your key metrics and what results would lead you to roll it out.</div>
+  <h3 class="ans">My answer: a fake door first, then an A/B test</h3>
   <div class="funnel">
     <div><span class="pill">Week 1</span><b>Fake door</b><span style="color:var(--ink-2);font-size:14px">"Crews – coming soon" button for a slice of lvl-30+ players. Low tap-through → stop before building.</span></div>
     <div><span class="pill">Weeks 2–6</span><b>MVP A/B</b><span style="color:var(--ink-2);font-size:14px">Players reaching lvl 30, 50/50, one or two test markets. Social effects show on D30, so it runs 4–5 weeks.</span></div>
@@ -445,9 +469,8 @@ html{scroll-behavior:smooth}
 
 <!-- ============ Q3 ============ -->
 <section id="q3">
-  <div class="eyebrow">Question 3</div>
-  <h2>ARPDAU fell 10% with flat DAU: find which part of revenue moved</h2>
-  <div class="qtext">Over two weeks ARPDAU dropped 10% while DAU stayed flat. Which breakdowns first, what hypotheses, which teams, what action for each finding?</div>
+  <h2><span class="qn">Question 3</span>ARPDAU fell 10% with flat DAU: find which part of revenue moved</h2>
+  <div class="qtext">Over the past two weeks, ARPDAU (average revenue per daily active user) in one of our titles has dropped by 10%, while DAU has stayed flat. Walk us through how you would investigate.</div>
 
   <div class="formula">ARPDAU = <em>IAP ARPDAU</em> + <em>Ad ARPDAU</em>
 
@@ -468,7 +491,8 @@ Ad ARPDAU  = Σ formats ( impressions per DAU × eCPM / 1000 )
     </div>
   </div>
 
-  <div class="subhead"><span class="tag">3a</span><h3>Breakdowns, in order</h3></div>
+  <div class="ask"><b>a)</b> <strong>Which breakdowns</strong> would you look at first, and why?</div>
+  <h3 class="ans">My answer: from the broadest split to the most specific</h3>
   <div class="tbl"><table>
     <tr><th>#</th><th>Breakdown</th><th>Why first</th></tr>
     <tr><td class="num">0</td><td>Data sanity: tracking, reporting lag, FX, refunds</td><td>An hour of checks can save days</td></tr>
@@ -480,7 +504,8 @@ Ad ARPDAU  = Σ formats ( impressions per DAU × eCPM / 1000 )
     <tr><td class="num">6</td><td>Driver level: eCPM vs impressions per network; conversion vs ARPPU per SKU</td><td>Names the exact broken term</td></tr>
   </table></div>
 
-  <div class="subhead"><span class="tag">3b</span><h3>Hypotheses and what each would look like</h3></div>
+  <div class="ask"><b>b)</b> <strong>What hypotheses</strong> would you form?</div>
+  <h3 class="ans">My answer: each one with what I'd expect to see</h3>
   <div class="tbl"><table>
     <tr><th>Group</th><th>Hypothesis</th><th>Signature in the data</th></tr>
     <tr><td>Data</td><td>Tracking or SDK bug, reporting lag, FX, refunds</td><td>Only one source drops; store and network reports disagree with the dashboard</td></tr>
@@ -496,7 +521,8 @@ Ad ARPDAU  = Σ formats ( impressions per DAU × eCPM / 1000 )
 
   <div class="grid2">
     <div style="display:flex;flex-direction:column;gap:10px">
-      <div class="subhead"><span class="tag">3c</span><h3>Teams</h3></div>
+      <div class="ask"><b>c)</b> <strong>Which teams</strong> would you work with?</div>
+  
       <div class="tbl"><table>
         <tr><td><strong>Data / BI</strong></td><td>validate data, run breakdowns</td></tr>
         <tr><td><strong>Ad monetization</strong></td><td>mediation, floors, network eCPM and fill</td></tr>
@@ -509,7 +535,8 @@ Ad ARPDAU  = Σ formats ( impressions per DAU × eCPM / 1000 )
       </table></div>
     </div>
     <div style="display:flex;flex-direction:column;gap:10px">
-      <div class="subhead"><span class="tag">3d</span><h3>Finding → action</h3></div>
+      <div class="ask"><b>d)</b> For each possible finding, <strong>what action</strong> would you take?</div>
+  
       <div class="tbl"><table>
         <tr><td><strong>Mix shift</strong></td><td>Not a monetization problem: align with UA on ROAS by geo; geo-specific pricing and floors</td></tr>
         <tr><td><strong>Market eCPM</strong></td><td>Set expectations, optimize floors, add bidders, lean on IAP and LiveOps</td></tr>
@@ -527,14 +554,13 @@ Ad ARPDAU  = Σ formats ( impressions per DAU × eCPM / 1000 )
 
 <!-- ============ EXTRA ============ -->
 <section id="extra">
-  <div class="eyebrow">Additional observation</div>
-  <h2>Any level can be brute-forced, so players rarely fail</h2>
+  <h2><span class="qn">One more thing</span>Any level can be brute-forced, so players rarely fail</h2>
   <div class="grid2">
-    <div class="card" style="display:flex;flex-direction:column;gap:8px">
+    <div class="plain" style="display:flex;flex-direction:column;gap:8px">
       <h3>Problem</h3>
       <p style="font-size:14px">Tapping a group that can't move costs nothing, it just shakes. So you can try everything until something works, and the game gets pretty easy. That matters for revenue: fewer losses means fewer moments where players want continues, boosters or lives.</p>
     </div>
-    <div class="card" style="display:flex;flex-direction:column;gap:8px">
+    <div class="plain" style="display:flex;flex-direction:column;gap:8px">
       <h3>Idea, to test separately</h3>
       <p style="font-size:14px">On <strong>hard levels only</strong>, players could get 3–5 mistakes. When they run out, one more for a video or three more for coins, which also gives coins another use. An optional hard mode with bigger rewards could work too. Casual players don't like being punished, so I'd test it on its own and watch retention closely.</p>
     </div>
@@ -736,17 +762,17 @@ const idx=(arr)=>{const b=arr.slice(0,14).reduce((a,c)=>a+c,0)/14;return arr.map
 const usd=v=>"$"+v.toFixed(3);
 const steps=[
   {n:"Is it real?",draw(){lineChart($("#chartEx"),[{n:"ARPDAU (index)",short:"ARPDAU",c:"--s1",v:idx(data.map(r=>r.arpdau))},{n:"DAU (index)",short:"DAU",c:"--s2",v:idx(data.map(r=>r.dau))}],{fmt:v=>v.toFixed(0)})},
-   find:()=>`<h3>Step 0 · Confirm the drop</h3><p>Last 14 days vs the 14 before: ARPDAU <strong>${fmtP(totPct)}</strong>, DAU <strong>${fmtP(dauChg)}</strong>.</p><ul class="clean"><li>Store and ad-network reports match the dashboard within 1%</li><li>No tracking changes; revenue in USD, refunds normal</li></ul><div class="so">The drop is real. Move on to where it comes from.</div>`},
+   find:()=>`<h3>Step 0: confirm the drop</h3><p>Last 14 days vs the 14 before: ARPDAU <strong>${fmtP(totPct)}</strong>, DAU <strong>${fmtP(dauChg)}</strong>.</p><ul class="clean"><li>Store and ad-network reports match the dashboard within 1%</li><li>No tracking changes; revenue in USD, refunds normal</li></ul><div class="so">The drop is real. Move on to where it comes from.</div>`},
   {n:"IAP vs ads",draw(){lineChart($("#chartEx"),[{n:"IAP ARPDAU (index)",short:"IAP",c:"--s1",v:idx(data.map(r=>r.iap))},{n:"Ad ARPDAU (index)",short:"Ads",c:"--s3",v:idx(data.map(r=>r.ad))}],{fmt:v=>v.toFixed(0),ann:[{d:UA_DAY,t:"UA change"}]})},
-   find:()=>`<h3>Step 1 · Split by source</h3><p>IAP ARPDAU <strong>${fmtP(pc(A(r=>r.iap),B(r=>r.iap)))}</strong>, ad ARPDAU <strong>${fmtP(pc(A(r=>r.ad),B(r=>r.ad)))}</strong>. Both fell on the same day.</p><div class="so">One broken placement or offer can't move IAP and ads together. That points to <strong>who is playing</strong>, so check the user mix next.</div>`},
+   find:()=>`<h3>Step 1: split by source</h3><p>IAP ARPDAU <strong>${fmtP(pc(A(r=>r.iap),B(r=>r.iap)))}</strong>, ad ARPDAU <strong>${fmtP(pc(A(r=>r.ad),B(r=>r.ad)))}</strong>. Both fell on the same day.</p><div class="so">One broken placement or offer can't move IAP and ads together. That points to <strong>who is playing</strong>, so check the user mix next.</div>`},
   {n:"Country mix",draw(){barChart($("#chartEx"),[{n:"Mix effect",v:mixPts,c:"--s2"},{n:"Rate effect",v:ratePts,c:"--s1"},{n:"Total change",v:totPct,c:"--bad"}],fmtPt)},
-   find:()=>`<h3>Step 2 · Mix vs rate by country</h3><div class="tbl"><table><tr><th>Tier</th><th class="num">DAU share</th><th class="num">ARPDAU</th></tr>${segRows.map(s=>`<tr><td>${s.k==="T1"?"Other tier-1":s.k}</td><td class="num">${(s.sa*100).toFixed(0)}% → ${(s.sb*100).toFixed(0)}%</td><td class="num">${fmtP(pc(s.aa,s.ab))}</td></tr>`).join("")}</table></div><p><strong>${Math.round(mixPts/totPct*100)}%</strong> of the drop is mix: the US share fell from ${(segRows[0].sa*100).toFixed(0)}% to ${(segRows[0].sb*100).toFixed(0)}% from day ${UA_DAY}, when UA moved budget to cheaper geos. Each country's own ARPDAU barely moved.</p><div class="so">Mostly not a monetization problem: talk to UA about ROAS by geo. But a rate effect of ${fmtPt(ratePts)} remains. Find it.</div>`},
+   find:()=>`<h3>Step 2: mix vs rate by country</h3><div class="tbl"><table><tr><th>Tier</th><th class="num">DAU share</th><th class="num">ARPDAU</th></tr>${segRows.map(s=>`<tr><td>${s.k==="T1"?"Other tier-1":s.k}</td><td class="num">${(s.sa*100).toFixed(0)}% → ${(s.sb*100).toFixed(0)}%</td><td class="num">${fmtP(pc(s.aa,s.ab))}</td></tr>`).join("")}</table></div><p><strong>${Math.round(mixPts/totPct*100)}%</strong> of the drop is mix: the US share fell from ${(segRows[0].sa*100).toFixed(0)}% to ${(segRows[0].sb*100).toFixed(0)}% from day ${UA_DAY}, when UA moved budget to cheaper geos. Each country's own ARPDAU barely moved.</p><div class="so">Mostly not a monetization problem: talk to UA about ROAS by geo. But a rate effect of ${fmtPt(ratePts)} remains. Find it.</div>`},
   {n:"Platform",draw(){lineChart($("#chartEx"),[{n:"iOS ad ARPDAU",short:"iOS",c:"--s1",v:data.map(r=>r.adIos)},{n:"Android ad ARPDAU",short:"Android",c:"--s2",v:data.map(r=>r.adAnd)}],{fmt:usd,ann:[{d:REL_DAY,t:"v2.14"}]})},
-   find:()=>`<h3>Step 3 · Platform and version</h3><p>Within each country, iOS ad revenue is flat. Android ad ARPDAU steps down <strong>${fmtP(pc(A(r=>r.adAnd),avg(REL_DAY,28,r=>r.adAnd)))}</strong> from day ${REL_DAY}, the day Android v2.14 shipped.</p><div class="so">A release-dated drop on one platform: look at the ad networks in that build.</div>`},
+   find:()=>`<h3>Step 3: platform and version</h3><p>Within each country, iOS ad revenue is flat. Android ad ARPDAU steps down <strong>${fmtP(pc(A(r=>r.adAnd),avg(REL_DAY,28,r=>r.adAnd)))}</strong> from day ${REL_DAY}, the day Android v2.14 shipped.</p><div class="so">A release-dated drop on one platform: look at the ad networks in that build.</div>`},
   {n:"Ad network",draw(){lineChart($("#chartEx"),[{n:"Network A eCPM",short:"Net A",c:"--s1",v:data.map(r=>r.ecpmA)},{n:"Network B eCPM",short:"Net B",c:"--s2",v:data.map(r=>r.ecpmB)}],{fmt:v=>"$"+v.toFixed(1),lo:0,ann:[{d:REL_DAY,t:"v2.14"}]})},
-   find:()=>`<h3>Step 4 · Network level (Android)</h3><p>Network A is stable. Network B's eCPM fell <strong>${fmtP(pc(A(r=>r.ecpmB),avg(REL_DAY,28,r=>r.ecpmB)))}</strong> from day ${REL_DAY}: its adapter in v2.14 loses most of its bids.</p><div class="so">Root cause #2 found. Hotfix or roll back the adapter; escalate with the partner; alert on per-network eCPM.</div>`},
+   find:()=>`<h3>Step 4: network level (Android)</h3><p>Network A is stable. Network B's eCPM fell <strong>${fmtP(pc(A(r=>r.ecpmB),avg(REL_DAY,28,r=>r.ecpmB)))}</strong> from day ${REL_DAY}: its adapter in v2.14 loses most of its bids.</p><div class="so">Root cause #2 found. Hotfix or roll back the adapter; escalate with the partner; alert on per-network eCPM.</div>`},
   {n:"Conclusion",draw(){barChart($("#chartEx"),[{n:"UA geo mix shift",v:mixPts,c:"--s2"},{n:"Android Network B",v:ratePts,c:"--s1"},{n:"ARPDAU change",v:totPct,c:"--bad"}],fmtPt)},
-   find:()=>`<h3>Two causes, two owners</h3><ul class="clean"><li><strong>${fmtPt(mixPts)}</strong> · user mix: UA shifted budget to lower-value geos. Owner: UA, with ROAS by geo.</li><li><strong>${fmtPt(ratePts)}</strong> · Network B adapter broken in Android v2.14. Owner: ad monetization and engineering.</li></ul><div class="so">Then add alerts on ARPDAU by source, geo, platform and network so this is caught in a day.</div>`},
+   find:()=>`<h3>Two causes, two owners</h3><ul class="clean"><li><strong>${fmtPt(mixPts)}</strong> from user mix: UA shifted budget to lower-value geos. Owner: UA, with ROAS by geo.</li><li><strong>${fmtPt(ratePts)}</strong> from Network B adapter broken in Android v2.14. Owner: ad monetization and engineering.</li></ul><div class="so">Then add alerts on ARPDAU by source, geo, platform and network so this is caught in a day.</div>`},
 ];
 let cur=0;
 function buildSteps(){
@@ -756,8 +782,8 @@ function buildSteps(){
 }
 function go(i){cur=i;document.querySelectorAll("#steps button").forEach((b,k)=>{b.classList.toggle("on",k===i);b.setAttribute("aria-selected",k===i)});steps[i].draw();$("#exFind").innerHTML=steps[i].find()}
 
-function drawAll(){drawStore();runSim();steps[cur].draw()}
-drawStore();buildSim();initCrew();buildSteps();
+function drawAll(){drawStore();steps[cur].draw()}
+drawStore();initCrew();buildSteps();
 $("#askBtn").addEventListener("click",ask);$("#demoAsk").addEventListener("click",ask);$("#demoReset").addEventListener("click",resetCrew);
 const mq=window.matchMedia("(prefers-color-scheme: dark)");mq.addEventListener&&mq.addEventListener("change",drawAll);
 new MutationObserver(drawAll).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
